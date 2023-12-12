@@ -15,8 +15,10 @@
         <module>payment-service</module>
         <module>notification-service</module>
         <module>catalog-service</module>
-        <module>inventary-service</module>
+        <module>inventory-service</module>
         <module>invoice-service</module>
+        <module>auth-service</module>
+        <module>orders-service</module>
     </modules>
 
     <properties>
@@ -27,6 +29,12 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>br.com.jlcorradi</groupId>
+                <artifactId>ecommerce-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-parent</artifactId>
@@ -54,7 +62,30 @@
                 <optional>true</optional>
                 <version>1.18.28</version>
             </dependency>
+            <dependency>
+                <groupId>org.modelmapper</groupId>
+                <artifactId>modelmapper</artifactId>
+                <version>3.0.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <finalName>orders-service</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
