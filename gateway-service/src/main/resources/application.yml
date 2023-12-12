@@ -1,0 +1,40 @@
+server:
+  port: 8090
+
+urls:
+  orders-service: http://localhost:8080
+  auth-service: http://localhost:8081
+
+management:
+  endpoint:
+    gateway:
+      enabled: true
+    metrics:
+      enabled: true
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: '*'
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: forward-orders
+          uri: ${urls.orders-service}
+          predicates:
+            - Path=/orders-service/**
+          filters:
+            - AuthFilter
+            - RemoveRequestHeader=Host
+            - RewritePath=/orders-service/(?<segment>.*), /$\{segment}
+        - id: forward-users
+          uri: ${urls.auth-service}
+          predicates:
+            - Path=/auth-service/**
+          filters:
+            - RemoveRequestHeader=Host
+            - RewritePath=/auth-service/(?<segment>.*), /$\{segment}

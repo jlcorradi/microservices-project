@@ -1,4 +1,4 @@
-package br.com.jlcorradi.orders.config;
+package br.com.jlcorradi.commons.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
