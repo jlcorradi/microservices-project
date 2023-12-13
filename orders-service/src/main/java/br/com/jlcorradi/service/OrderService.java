@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface OrderService {
-    OrderDto createOrder(CreateOrderRequest order, UUID userId);
+    OrderDto placeOrder(CreateOrderRequest order, UUID userId);
 
     List<OrderDto> listPendingOrders(UUID uuid);
 }

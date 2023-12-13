@@ -4,6 +4,9 @@ server:
 authService:
   jwtTokenSecret: RW50ZXIgdGhlIG1hdHJpeC4gSXQncyBhIGZhY2VzaXRpbmcgd29ybGQgb3V0IHRoZXIh
 
+client-services-urls:
+  payment-service: http://localhost:8082
+
 management:
   endpoints:
     web:

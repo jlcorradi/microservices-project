@@ -1,0 +1,22 @@
+server:
+  port: ${SERVICE_PORT}
+
+authService:
+  jwtTokenSecret: ${JWT_TOKEN_SECRET}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+spring:
+  application:
+    name: Payment Service
+  datasource:
+    url: ${JDBC_URL}
+    username: ${JDBC_USERNAME}
+    password: ${JDBC_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update

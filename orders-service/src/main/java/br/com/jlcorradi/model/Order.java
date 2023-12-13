@@ -22,6 +22,7 @@ public class Order {
     private Date orderDate;
     private BigDecimal amount;
     private String history;
+    private UUID paymentTransactionId;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;

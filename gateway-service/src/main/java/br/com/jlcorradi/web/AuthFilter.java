@@ -24,7 +24,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<Object> {
 
     private final String usersServiceBaseUrl;
 
-    public AuthFilter(WebClient.Builder webClientBuilder, @Value("${urls.auth-service}") String usersServiceBaseUrl) {
+    public AuthFilter(WebClient.Builder webClientBuilder, @Value("${client-services-urls.auth-service}") String usersServiceBaseUrl) {
         this.webClientBuilder = webClientBuilder;
         this.usersServiceBaseUrl = usersServiceBaseUrl;
     }

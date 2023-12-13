@@ -19,5 +19,6 @@ public class OrderDto {
     private BigDecimal amount;
     private String history;
     private OrderStatus status;
+    private UUID paymentTransactionId;
 
 }

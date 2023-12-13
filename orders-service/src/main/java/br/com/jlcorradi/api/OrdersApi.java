@@ -26,7 +26,7 @@ public class OrdersApi {
     public ResponseEntity<OrderDto> createOrder(
             @RequestBody @Validated CreateOrderRequest request,
             BasicJwtAuthenticationToken principal) {
-        OrderDto order = orderService.createOrder(request, UUID.fromString(principal.getUserId()));
+        OrderDto order = orderService.placeOrder(request, UUID.fromString(principal.getUserId()));
         log.info("Order created: {}", order);
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }

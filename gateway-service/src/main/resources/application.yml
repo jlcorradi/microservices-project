@@ -1,9 +1,10 @@
 server:
   port: 8090
 
-urls:
+client-services-urls:
   orders-service: http://localhost:8080
   auth-service: http://localhost:8081
+  payment-service: http://localhost:8082
 
 management:
   endpoints:
@@ -30,14 +31,21 @@ spring:
 
       routes:
         - id: forward-orders
-          uri: ${urls.orders-service}
+          uri: ${client-services-urls.orders-service}
           predicates:
             - Path=/orders-service/**
           filters:
             - RewritePath=/orders-service/(?<segment>.*), /$\{segment}
         - id: forward-users
-          uri: ${urls.auth-service}
+          uri: ${client-services-urls.auth-service}
           predicates:
             - Path=/auth-service/**
           filters:
             - RewritePath=/auth-service/(?<segment>.*), /$\{segment}
+
+        - id: forward-payment
+          uri: ${client-services-urls.payment-service}
+          predicates:
+            - Path=/payment-service/**
+          filters:
+            - RewritePath=/payment-service/(?<segment>.*), /$\{segment}
