@@ -33,7 +33,7 @@ public class BadRequestErrorHandling {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnauthorizedTokenException.class)
     public void handleUnauthorizedException(UnauthorizedTokenException ex) {
-        log.debug("Unauthorized: {}", ex);
+        log.debug("Unauthorized: {}", ex.getMessage());
     }
 
 }
