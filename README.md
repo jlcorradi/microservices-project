@@ -1,3 +1,11 @@
+<!-- TOC -->
+  * [Intended Structure](#intended-structure)
+  * [Common classes and DTOs](#common-classes-and-dtos)
+  * [Creating a new Service](#creating-a-new-service)
+    * [Decent Defaults](#decent-defaults)
+      * [Authentication](#authentication)
+<!-- TOC -->
+
 ## Intended Structure
 The project is a POC for a microservices architecture that will explore and demonstrate concepts.
 
