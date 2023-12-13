@@ -9,9 +9,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @WithCommons
 @WithStaticJwtSecurity
-public class OrdersServiceApplication {
+public class CatalogServiceApplication {
     public static void main(String[] args) {
-        SpringApplication springApplication = new SpringApplication(OrdersServiceApplication.class);
+        SpringApplication springApplication = new SpringApplication(CatalogServiceApplication.class);
         springApplication.addListeners(new SystemInfoApplicationListener());
         springApplication.run(args);
     }

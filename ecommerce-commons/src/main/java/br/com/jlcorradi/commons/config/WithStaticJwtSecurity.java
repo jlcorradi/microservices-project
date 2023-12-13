@@ -1,5 +1,6 @@
-package br.com.jlcorradi.commons.auth;
+package br.com.jlcorradi.commons.config;
 
+import br.com.jlcorradi.commons.auth.BasicJwtAuthSecurityConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 

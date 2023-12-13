@@ -1,0 +1,14 @@
+server:
+  port: 8083
+
+authService:
+  jwtTokenSecret: RW50ZXIgdGhlIG1hdHJpeC4gSXQncyBhIGZhY2VzaXRpbmcgd29ybGQgb3V0IHRoZXIh
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+spring:
+  application:
+    name: Catalog Service

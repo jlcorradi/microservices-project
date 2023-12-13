@@ -1,14 +1,15 @@
 package br.com.jlcorradi.commons.auth;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 
+@Getter
+@EqualsAndHashCode(callSuper = false)
 public class BasicJwtAuthenticationToken extends AbstractAuthenticationToken {
 
-    @Getter
     private final String username;
-    @Getter
     private final String userId;
 
     public BasicJwtAuthenticationToken(String username, String userId, String commaSeparatedAuthorities) {

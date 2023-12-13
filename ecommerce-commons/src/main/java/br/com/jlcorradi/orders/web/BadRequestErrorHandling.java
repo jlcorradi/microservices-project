@@ -22,7 +22,7 @@ public class BadRequestErrorHandling {
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> result = ex.getBindingResult().getAllErrors().stream()
                 .collect(Collectors.toMap(
-                        err -> err instanceof FieldError ? ((FieldError) err).getField() : err.getObjectName(),
+                        err -> (err instanceof FieldError fieldError) ? fieldError.getField() : err.getObjectName(),
                         objectError -> Optional.ofNullable(objectError.getDefaultMessage())
                                 .orElse("No message provided"))
                 );

@@ -6,20 +6,22 @@ urls:
   auth-service: http://localhost:8081
 
 management:
-  endpoint:
-    gateway:
-      enabled: true
-    metrics:
-      enabled: true
   endpoints:
     enabled-by-default: true
     web:
       exposure:
         include: '*'
+  endpoint:
+    gateway:
+      enabled: true
+    metrics:
+      enabled: true
+
 
 spring:
   application:
     name: api-gateway
+
   cloud:
     gateway:
       global-filters:

@@ -6,6 +6,8 @@ authService:
   jwtTokenSecret: RW50ZXIgdGhlIG1hdHJpeC4gSXQncyBhIGZhY2VzaXRpbmcgd29ybGQgb3V0IHRoZXIh
 
 spring:
+  application:
+    name: Authentication Service
   datasource:
     url: jdbc:mysql://localhost:3306/auth
     username: auth_user
