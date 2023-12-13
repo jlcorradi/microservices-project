@@ -1,3 +1,6 @@
+# Microservices Project
+Project to demonstrate concepts and practices in a microservice architecture.
+
 <!-- TOC -->
   * [Intended Structure](#intended-structure)
   * [Common classes and DTOs](#common-classes-and-dtos)
