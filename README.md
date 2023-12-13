@@ -119,3 +119,21 @@ The commons project also provides static JwtAuhentication that verifies the sign
 Authenticated user (BasicJwtAuthenticationToken) in the SecurityContextHolder with the username, id and authorities 
 allowing the application to use the @PreAuthorize annotation with roles validation. It is brought in 
 via the ```@WithStaticJwtSecurity``` annotation.
+
+#### Authentication
+When using Feign Clients the Authentication Header will be propagated by default. You can choose if you want the client
+requests to go through the Gateway service and have a full authentication check or go direct to the intended service 
+with the jwt token which will statically verify the token and resolve the username and userId from it.
+
+You can inject ```BasicJwtAuthenticationToken``` in your request method to have access to it:
+```java
+@Getter
+@EqualsAndHashCode(callSuper = false)
+public class BasicJwtAuthenticationToken extends AbstractAuthenticationToken {
+
+    private final String username;
+    private final String userId;
+
+   ...
+}
+```
