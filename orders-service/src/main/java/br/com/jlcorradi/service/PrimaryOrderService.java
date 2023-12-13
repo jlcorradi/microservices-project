@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -21,8 +22,9 @@ public class PrimaryOrderService implements OrderService {
     private final ModelMapper mapper;
 
     @Override
-    public OrderDto createOrder(CreateOrderRequest order) {
+    public OrderDto createOrder(CreateOrderRequest order, UUID userId) {
         Order newOrder = mapper.map(order, Order.class);
+        newOrder.setCustomerId(userId);
         newOrder.setStatus(OrderStatus.PENDING);
         newOrder.setOrderDate(new Date());
         newOrder = orderRepository.save(newOrder);

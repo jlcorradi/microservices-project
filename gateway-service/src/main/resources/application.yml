@@ -22,19 +22,21 @@ spring:
     name: api-gateway
   cloud:
     gateway:
+      global-filters:
+        - RemoveRequestHeader=Host
+        - AuthFilter
+        - AddRequestHeader=Authorization, $\{http.headers.Authorization}
+
       routes:
         - id: forward-orders
           uri: ${urls.orders-service}
           predicates:
             - Path=/orders-service/**
           filters:
-            - AuthFilter
-            - RemoveRequestHeader=Host
             - RewritePath=/orders-service/(?<segment>.*), /$\{segment}
         - id: forward-users
           uri: ${urls.auth-service}
           predicates:
             - Path=/auth-service/**
           filters:
-            - RemoveRequestHeader=Host
             - RewritePath=/auth-service/(?<segment>.*), /$\{segment}

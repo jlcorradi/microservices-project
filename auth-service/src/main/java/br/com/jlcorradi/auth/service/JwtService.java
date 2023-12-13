@@ -5,10 +5,11 @@ import br.com.jlcorradi.auth.model.ActiveToken;
 import br.com.jlcorradi.auth.model.EcommerceUser;
 import br.com.jlcorradi.auth.repository.ActiveTokenRepository;
 import br.com.jlcorradi.auth.repository.EcommerceUserRepository;
+import br.com.jlcorradi.commons.auth.Constants;
+import br.com.jlcorradi.commons.auth.JwtValidator;
 import br.com.jlcorradi.commons.exception.UnauthorizedTokenException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.transaction.Transactional;
@@ -28,18 +29,21 @@ public class JwtService {
     private final String jwtTokenSecret;
     private final EcommerceUserRepository userRepository;
     private final ModelMapper mapper;
+    private final JwtValidator jwtValidator;
 
     public JwtService(
             ActiveTokenRepository repository,
             @Value("${authService.tokenDurationInMillis}") int tokenDurationInMilliseconds,
             @Value("${authService.jwtTokenSecret}") String jwtTokenSecret,
             EcommerceUserRepository userRepository,
-            ModelMapper mapper) {
+            ModelMapper mapper,
+            JwtValidator jwtValidator) {
         this.repository = repository;
         this.tokenDurationInMilliseconds = tokenDurationInMilliseconds;
         this.jwtTokenSecret = jwtTokenSecret;
         this.userRepository = userRepository;
         this.mapper = mapper;
+        this.jwtValidator = jwtValidator;
     }
 
     @Transactional
@@ -60,7 +64,8 @@ public class JwtService {
                 .issuedAt(new Date())
                 .expiration(expiration)
                 .subject(user.getUsername())
-                .claim("authorities", user.getCommaSeparatedAuthorities());
+                .claim(Constants.AUTHORITIES_JWT_CLAIM, user.getCommaSeparatedAuthorities())
+                .claim(Constants.USER_ID_JWT_CLAIM, user.getId());
         String jwt = jwtBuilder.compact();
         ActiveToken activeToken = ActiveToken.of(UUID.randomUUID(), user, jwt, expiration, true);
         activeToken = repository.save(activeToken);
@@ -69,17 +74,8 @@ public class JwtService {
     }
 
     public EcommerceUserDto validateToken(String accessToken) {
-        JwtParser parser = Jwts.parser()
-                .verifyWith(Keys.hmacShaKeyFor(jwtTokenSecret.getBytes(StandardCharsets.UTF_8)))
-                .build();
-
-        Claims payload = null;
-        try {
-            payload = parser.parseSignedClaims(accessToken).getPayload();
-        } catch (Exception e) {
-            throw new UnauthorizedTokenException(e);
-        }
-        return userRepository.findByUsername(payload.getSubject())
+        Claims claims = jwtValidator.validateJwtToken(accessToken);
+        return userRepository.findByUsername(claims.getSubject())
                 .map(user -> repository.findActiveTokenByUserAndToken(user, accessToken))
                 .flatMap(activeToken -> activeToken)
                 .map(activeToken -> mapper.map(activeToken.getUser(), EcommerceUserDto.class))

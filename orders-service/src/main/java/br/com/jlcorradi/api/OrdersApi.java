@@ -1,5 +1,6 @@
 package br.com.jlcorradi.api;
 
+import br.com.jlcorradi.commons.auth.BasicJwtAuthenticationToken;
 import br.com.jlcorradi.orders.dto.CreateOrderRequest;
 import br.com.jlcorradi.orders.dto.OrderDto;
 import br.com.jlcorradi.service.OrderService;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -22,8 +25,10 @@ public class OrdersApi {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<OrderDto> createOrder(@RequestBody @Validated CreateOrderRequest request) {
-        OrderDto order = orderService.createOrder(request);
+    public ResponseEntity<OrderDto> createOrder(
+            @RequestBody @Validated CreateOrderRequest request,
+            BasicJwtAuthenticationToken principal) {
+        OrderDto order = orderService.createOrder(request, UUID.fromString(principal.getUserId()));
         log.info("Order created: {}", order);
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }

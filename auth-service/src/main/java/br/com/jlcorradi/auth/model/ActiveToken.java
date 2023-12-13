@@ -23,6 +23,7 @@ public class ActiveToken {
     @JoinColumn(name = "user_id")
     private EcommerceUser user;
 
+    @Column(length = 2000)
     private String token;
     private Date expirationDate;
     private boolean active;

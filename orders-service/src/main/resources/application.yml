@@ -1,6 +1,9 @@
 server:
   port: 8080
 
+authService:
+  jwtTokenSecret: RW50ZXIgdGhlIG1hdHJpeC4gSXQncyBhIGZhY2VzaXRpbmcgd29ybGQgb3V0IHRoZXIh
+
 management:
   endpoints:
     web:
