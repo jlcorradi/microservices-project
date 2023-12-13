@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -29,5 +30,12 @@ public class PrimaryOrderService implements OrderService {
         newOrder.setOrderDate(new Date());
         newOrder = orderRepository.save(newOrder);
         return mapper.map(newOrder, OrderDto.class);
+    }
+
+    @Override
+    public List<OrderDto> listPendingOrders(UUID uuid) {
+        return orderRepository.findAllByCustomerIdAndStatusNot(uuid, OrderStatus.COMPLETE).stream()
+                .map(order -> mapper.map(order, OrderDto.class))
+                .toList();
     }
 }

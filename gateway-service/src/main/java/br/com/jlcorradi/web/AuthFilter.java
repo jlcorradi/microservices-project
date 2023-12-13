@@ -1,5 +1,6 @@
 package br.com.jlcorradi.web;
 
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -60,6 +61,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<Object> {
                             Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED)))
                     .bodyToMono(UserDto.class)
                     .flatMap(userDto -> {
+                        MDC.put("userId", String.valueOf(userDto.userId));
                         exchange.getRequest()
                                 .mutate()
                                 .header("x-user-id", String.valueOf(userDto.userId()));

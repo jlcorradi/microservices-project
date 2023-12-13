@@ -1,4 +1,4 @@
-package br.com.jlcorradi.orders.web;
+package br.com.jlcorradi.commons.web;
 
 import br.com.jlcorradi.commons.exception.UnauthorizedTokenException;
 import lombok.extern.slf4j.Slf4j;

@@ -5,5 +5,6 @@ public enum OrderStatus {
     AWAITING_PAYMENT,
     AWAITING_INVOICE,
     AWAITING_SHIPPING,
-    SHIPPED
+    SHIPPED,
+    COMPLETE;
 }

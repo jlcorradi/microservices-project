@@ -1,7 +1,7 @@
 package br.com.jlcorradi.commons.config;
 
 import br.com.jlcorradi.commons.auth.JwtValidator;
-import br.com.jlcorradi.orders.web.BadRequestErrorHandling;
+import br.com.jlcorradi.commons.web.BadRequestErrorHandling;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({MapperConfig.class, BadRequestErrorHandling.class, JwtValidator.class})
+@Import({CommonConfig.class, BadRequestErrorHandling.class, JwtValidator.class})
 public @interface WithCommons {
 }

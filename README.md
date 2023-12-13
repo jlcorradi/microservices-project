@@ -58,7 +58,7 @@ spring:
   datasource:
     url: ${JDBC_URL}
     username: ${JDBC_USERNAME}
-    password: ${JDBC_PASSWORD~~~~}
+    password: ${JDBC_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 ```
 

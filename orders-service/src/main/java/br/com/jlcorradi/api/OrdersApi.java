@@ -9,11 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -31,6 +29,12 @@ public class OrdersApi {
         OrderDto order = orderService.createOrder(request, UUID.fromString(principal.getUserId()));
         log.info("Order created: {}", order);
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OrderDto>> listPendingOrders(BasicJwtAuthenticationToken principal) {
+        List<OrderDto> orders = orderService.listPendingOrders(UUID.fromString(principal.getUserId()));
+        return ResponseEntity.ok(orders);
     }
 
 }

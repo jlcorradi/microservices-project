@@ -6,8 +6,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -26,7 +26,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        AbstractAuthenticationToken auth = Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
+        BasicJwtAuthenticationToken auth = Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
                 .map(authHeader -> authHeader.substring(Constants.BEARER_HEADER.length()))
                 .map(this::createAuthenticationObject)
                 .orElseThrow(UnauthorizedTokenException::new);
@@ -36,10 +36,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         SecurityContextHolder.setContext(newContext);
 
+        MDC.put("userId", auth.getUserId());
         filterChain.doFilter(request, response);
     }
 
-    private AbstractAuthenticationToken createAuthenticationObject(String token) {
+    private BasicJwtAuthenticationToken createAuthenticationObject(String token) {
         Claims claims = jwtValidator.validateJwtToken(token);
         return new BasicJwtAuthenticationToken(claims.getSubject(),
                 claims.get(Constants.USER_ID_JWT_CLAIM, String.class),
