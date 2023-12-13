@@ -2,13 +2,13 @@
 Project to demonstrate concepts and practices in a microservice architecture.
 
 <!-- TOC -->
+* [Microservices Project](#microservices-project)
   * [Intended Structure](#intended-structure)
   * [Common classes and DTOs](#common-classes-and-dtos)
   * [Creating a new Service](#creating-a-new-service)
-    * [Decent Defaults](#decent-defaults)
-      * [Authentication](#authentication)
+  * [Decent Defaults](#decent-defaults)
+  * [Authentication](#authentication)
 <!-- TOC -->
-
 ## Intended Structure
 The project is a POC for a microservices architecture that will explore and demonstrate concepts.
 
@@ -117,7 +117,7 @@ public class ServiceApplication {
 }
 ```
 
-### Decent Defaults
+## Decent Defaults
 Once you annotate your application with ```@WithCommons``` you bring in common features from the commons project:
  - Exception Handler at the API Level
  - Model Mapper ready to use
@@ -131,7 +131,7 @@ Authenticated user (BasicJwtAuthenticationToken) in the SecurityContextHolder wi
 allowing the application to use the @PreAuthorize annotation with roles validation. It is brought in 
 via the ```@WithStaticJwtSecurity``` annotation.
 
-#### Authentication
+## Authentication
 When using Feign Clients the Authentication Header will be propagated by default. You can choose if you want the client
 requests to go through the Gateway service and have a full authentication check or go direct to the intended service 
 with the jwt token which will statically verify the token and resolve the username and userId from it.
