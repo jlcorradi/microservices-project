@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Optional;
 
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -26,6 +27,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if (!Collections.list(request.getHeaderNames()).contains(HttpHeaders.AUTHORIZATION)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         BasicJwtAuthenticationToken auth = Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
                 .map(authHeader -> authHeader.substring(Constants.BEARER_HEADER.length()))
                 .map(this::createAuthenticationObject)
@@ -33,10 +39,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         SecurityContext newContext = SecurityContextHolder.createEmptyContext();
         newContext.setAuthentication(auth);
-
         SecurityContextHolder.setContext(newContext);
-
         MDC.put("userId", auth.getUserId());
+
         filterChain.doFilter(request, response);
     }
 

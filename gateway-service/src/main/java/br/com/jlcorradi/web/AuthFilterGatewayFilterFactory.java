@@ -17,14 +17,15 @@ import reactor.core.publisher.Mono;
 import java.util.Optional;
 
 @Component
-public class AuthFilter extends AbstractGatewayFilterFactory<Object> {
+public class AuthFilterGatewayFilterFactory extends AbstractGatewayFilterFactory<Object> {
 
     public static final String BEARER_PREFIX = "Bearer ";
     private final WebClient.Builder webClientBuilder;
 
     private final String usersServiceBaseUrl;
 
-    public AuthFilter(WebClient.Builder webClientBuilder, @Value("${client-services-urls.auth-service}") String usersServiceBaseUrl) {
+    public AuthFilterGatewayFilterFactory(WebClient.Builder webClientBuilder,
+                                          @Value("${client-services-urls.auth-service}") String usersServiceBaseUrl) {
         this.webClientBuilder = webClientBuilder;
         this.usersServiceBaseUrl = usersServiceBaseUrl;
     }
