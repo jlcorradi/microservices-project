@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
+/**
+ * This class represents a RESTful API for handling payment transactions.
+ *
+ * The PaymentApi class provides methods for creating payment transactions.
+ */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/payments")

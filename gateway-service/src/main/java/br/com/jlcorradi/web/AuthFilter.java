@@ -35,10 +35,6 @@ public class AuthFilter extends AbstractGatewayFilterFactory<Object> {
     @Override
     public GatewayFilter apply(Object config) {
         return (exchange, chain) -> {
-            if (exchange.getRequest().getURI().toString().contains("/api/v1/auth")) {
-                return chain.filter(exchange);
-            }
-
             HttpHeaders headers = exchange.getRequest().getHeaders();
             String authHeader = Optional.ofNullable(headers.get(HttpHeaders.AUTHORIZATION))
                     .map(strings -> strings.get(0))

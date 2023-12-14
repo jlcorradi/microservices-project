@@ -24,10 +24,8 @@ spring:
 
   cloud:
     gateway:
-      global-filters:
+      default-filters:
         - RemoveRequestHeader=Host
-        - AuthFilter
-        - AddRequestHeader=Authorization, $\{http.headers.Authorization}
 
       routes:
         - id: forward-orders
@@ -36,6 +34,8 @@ spring:
             - Path=/orders-service/**
           filters:
             - RewritePath=/orders-service/(?<segment>.*), /$\{segment}
+            - AuthFilter
+
         - id: forward-users
           uri: ${client-services-urls.auth-service}
           predicates:
@@ -49,3 +49,4 @@ spring:
             - Path=/payment-service/**
           filters:
             - RewritePath=/payment-service/(?<segment>.*), /$\{segment}
+            - AuthFilter

@@ -1,5 +1,6 @@
 package br.com.jlcorradi.commons.web;
 
+import feign.Logger;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.context.annotation.Bean;
@@ -11,10 +12,15 @@ public class FeignClientInterceptorConfig {
 
     @Bean
     public RequestInterceptor requestInterceptor() {
-        return new FeignClientInterceptor();
+        return new FeighClientAuthHeaderpropagatorRequestInterceptor();
     }
 
-    private static class FeignClientInterceptor implements RequestInterceptor {
+    @Bean
+    Logger.Level feignLoggerLevel() {
+        return Logger.Level.FULL;
+    }
+
+    private static class FeighClientAuthHeaderpropagatorRequestInterceptor implements RequestInterceptor {
         @Override
         public void apply(RequestTemplate requestTemplate) {
             HttpUtils.getHeaderFromCurrentRequest(HttpHeaders.AUTHORIZATION)

@@ -50,6 +50,7 @@ public class JwtService {
     public String retrieveOrCreateTokenForUser(EcommerceUser user) {
         return repository.findActiveTokenByUser(user)
                 .stream()
+                .filter(activeToken -> activeToken.getExpirationDate().after(new Date(System.currentTimeMillis())))
                 .findFirst()
                 .map(ActiveToken::getToken)
                 .orElseGet(() -> createNewToken(user));
