@@ -108,7 +108,7 @@ management:
         include: '*'
     web:
       exposure:
-        include: "health,info,prometheus"~~~~
+        include: "health,info,prometheus"
         
 spring:
   application:
