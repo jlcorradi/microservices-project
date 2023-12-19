@@ -3,7 +3,6 @@ package br.com.jlcorradi.commons.auth;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,8 +23,6 @@ public class BasicJwtAuthSecurityConfig
   {
     log.info("Using Basic Static Jwt based security");
 
-    BasicJwtSecurityHttpConfigurer basicJwtSecurityHttpConfigurer = new BasicJwtSecurityHttpConfigurer(jwtValidator);
-
     return http
         .httpBasic(AbstractHttpConfigurer::disable)
         .csrf(AbstractHttpConfigurer::disable)
@@ -36,8 +33,7 @@ public class BasicJwtAuthSecurityConfig
           authorize.requestMatchers("/actuator", "/actuator/**").permitAll();
           authorize.anyRequest().authenticated();
         })
-        .with(basicJwtSecurityHttpConfigurer, Customizer.withDefaults())
-        .authenticationProvider(new BasicJwtAuthenticationProvider(jwtValidator))
+        .with(new BasicJwtSecurityHttpConfigurer(), jwt -> jwt.withJwtValidator(jwtValidator))
         .build();
   }
 }

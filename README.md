@@ -173,19 +173,21 @@ to your security filter chain like so:
 
 ```java
 @Bean
-  public SecurityFilterChain config(HttpSecurity http) throws Exception
-  {
-    log.info("Using Basic Static Jwt based security");
-    return http
-        .httpBasic(AbstractHttpConfigurer::disable)
-        .csrf(AbstractHttpConfigurer::disable)
-        .sessionManagement(cfg -> cfg.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(authorize ->
-        {
-          authorize.requestMatchers("/actuator", "/actuator/**").permitAll();
-          authorize.anyRequest().authenticated();
-        })
-        .with(new BasicJwtSecurityHttpConfigurer(jwtValidator), Customizer.withDefaults())
-        .build();
-  }
+public SecurityFilterChain config(HttpSecurity http) throws Exception
+{
+  log.info("Using Basic Static Jwt based security");
+
+  return http
+          .httpBasic(AbstractHttpConfigurer::disable)
+          .csrf(AbstractHttpConfigurer::disable)
+          .formLogin(AbstractHttpConfigurer::disable)
+          .sessionManagement(cfg -> cfg.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+          .authorizeHttpRequests(authorize ->
+          {
+            authorize.requestMatchers("/actuator", "/actuator/**").permitAll();
+            authorize.anyRequest().authenticated();
+          })
+          .with(new BasicJwtSecurityHttpConfigurer(), jwt -> jwt.withJwtValidator(jwtValidator))
+          .build();
+}
 ```

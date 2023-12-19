@@ -1,20 +1,24 @@
 package br.com.jlcorradi.commons.auth;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
 
-@RequiredArgsConstructor
 public class BasicJwtSecurityHttpConfigurer extends AbstractHttpConfigurer<BasicJwtSecurityHttpConfigurer, HttpSecurity>
 {
-  private final JwtValidator jwtValidator;
+  private JwtValidator jwtValidator;
 
   @Override
   public void init(HttpSecurity http)
   {
     http.authenticationProvider(new BasicJwtAuthenticationProvider(jwtValidator));
+  }
+
+  public BasicJwtSecurityHttpConfigurer withJwtValidator(JwtValidator jwtValidator)
+  {
+    this.jwtValidator = jwtValidator;
+    return this;
   }
 
   @Override
