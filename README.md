@@ -164,10 +164,28 @@ You can inject ```BasicJwtAuthenticationToken``` in your request method to have 
 @Getter
 @EqualsAndHashCode(callSuper = false)
 public class BasicJwtAuthenticationToken extends AbstractAuthenticationToken {
-
-    private final String username;
-    private final String userId;
-
    ...
 }
+```
+
+You can configure Basic JWT authentication adding ```.with(new BasicJwtSecurityHttpConfigurer(jwtValidator), Customizer.withDefaults())```
+to your security filter chain like so:
+
+```java
+@Bean
+  public SecurityFilterChain config(HttpSecurity http) throws Exception
+  {
+    log.info("Using Basic Static Jwt based security");
+    return http
+        .httpBasic(AbstractHttpConfigurer::disable)
+        .csrf(AbstractHttpConfigurer::disable)
+        .sessionManagement(cfg -> cfg.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(authorize ->
+        {
+          authorize.requestMatchers("/actuator", "/actuator/**").permitAll();
+          authorize.anyRequest().authenticated();
+        })
+        .with(new BasicJwtSecurityHttpConfigurer(jwtValidator), Customizer.withDefaults())
+        .build();
+  }
 ```

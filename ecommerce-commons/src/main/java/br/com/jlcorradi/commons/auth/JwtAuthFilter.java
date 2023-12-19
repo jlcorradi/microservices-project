@@ -1,13 +1,14 @@
 package br.com.jlcorradi.commons.auth;
 
 import br.com.jlcorradi.commons.exception.UnauthorizedTokenException;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,41 +20,36 @@ import java.util.Optional;
 public class JwtAuthFilter extends OncePerRequestFilter
 {
 
-  private final JwtValidator jwtValidator;
+  private final AuthenticationManager authenticationManager;
 
-  public JwtAuthFilter(JwtValidator jwtValidator)
+  public JwtAuthFilter(AuthenticationManager authenticationManager)
   {
-    this.jwtValidator = jwtValidator;
+    this.authenticationManager = authenticationManager;
   }
 
   @Override
   protected void doFilterInternal(HttpServletRequest request,
                                   HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException
   {
+    // Check
     if (!Collections.list(request.getHeaderNames()).contains(HttpHeaders.AUTHORIZATION.toLowerCase())) {
       filterChain.doFilter(request, response);
       return;
     }
 
-    BasicJwtAuthenticationToken auth = Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
+    BasicJwtAuthenticationToken authRequest = Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
         .map(authHeader -> authHeader.substring(Constants.BEARER_HEADER.length()))
-        .map(this::createAuthenticationObject)
+        .map(BasicJwtAuthenticationToken::unauthenticated)
         .orElseThrow(UnauthorizedTokenException::new);
 
+    Authentication auth = authenticationManager.authenticate(authRequest);
     SecurityContext newContext = SecurityContextHolder.createEmptyContext();
     newContext.setAuthentication(auth);
     SecurityContextHolder.setContext(newContext);
-    MDC.put("userId", auth.getUserId());
+
+    MDC.put("userId", auth.getPrincipal().toString());
 
     filterChain.doFilter(request, response);
-  }
-
-  private BasicJwtAuthenticationToken createAuthenticationObject(String token)
-  {
-    Claims claims = jwtValidator.validateJwtToken(token);
-    return new BasicJwtAuthenticationToken(claims.getSubject(),
-        claims.get(Constants.USER_ID_JWT_CLAIM, String.class),
-        claims.get(Constants.AUTHORITIES_JWT_CLAIM, String.class));
   }
 
 }
