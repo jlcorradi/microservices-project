@@ -8,11 +8,21 @@ client-services-urls:
   payment-service: http://localhost:8082
 
 management:
+  observations:
+    key-values:
+      application: ${spring.application.name}
   endpoints:
+    enabled-by-default: true
+    jmx:
+      exposure:
+        include: '*'
     web:
       exposure:
-        include: "*"
+        include: "health,info,prometheus"
+
 spring:
+  application:
+    name: Orders Service
   datasource:
     url: jdbc:mysql://localhost:3306/orders
     username: ecommerce

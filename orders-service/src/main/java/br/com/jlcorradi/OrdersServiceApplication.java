@@ -11,10 +11,12 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @WithCommons
 @WithStaticJwtSecurity
 @EnableFeignClients
-public class OrdersServiceApplication {
-    public static void main(String[] args) {
-        SpringApplication springApplication = new SpringApplication(OrdersServiceApplication.class);
-        springApplication.addListeners(new SystemInfoApplicationListener());
-        springApplication.run(args);
-    }
+public class OrdersServiceApplication
+{
+  public static void main(String[] args)
+  {
+    SpringApplication springApplication = new SpringApplication(OrdersServiceApplication.class);
+    springApplication.addListeners(new SystemInfoApplicationListener());
+    springApplication.run(args);
+  }
 }

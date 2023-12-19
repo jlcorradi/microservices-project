@@ -6,9 +6,17 @@ authService:
 
 management:
   endpoints:
+    enabled-by-default: true
+    jmx:
+      exposure:
+        include: '*'
     web:
       exposure:
-        include: "*"
+        include: "health,info,prometheus"
+  observations:
+    key-values:
+      application: ${spring.application.name}
+
 spring:
   application:
     name: Catalog Service

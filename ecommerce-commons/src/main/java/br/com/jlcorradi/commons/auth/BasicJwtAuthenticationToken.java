@@ -4,32 +4,47 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.util.StringUtils;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class BasicJwtAuthenticationToken extends AbstractAuthenticationToken {
+public class BasicJwtAuthenticationToken extends AbstractAuthenticationToken
+{
+  private final String userId;
+  private final String token;
 
-    private final String username;
-    private final String userId;
+  private String username;
 
-    public BasicJwtAuthenticationToken(String username, String userId, String commaSeparatedAuthorities) {
-        super(AuthorityUtils.createAuthorityList(commaSeparatedAuthorities.split(",")));
-        this.username = username;
-        this.userId = userId;
-    }
+  private BasicJwtAuthenticationToken(String userId, String token, String commaSeparatedAuthorities)
+  {
+    super(AuthorityUtils.createAuthorityList(commaSeparatedAuthorities.split(",")));
+    this.userId = userId;
+    this.token = token;
+    this.setAuthenticated(!StringUtils.hasText(token));
+  }
 
-    @Override
-    public Object getCredentials() {
-        return this.username;
-    }
+  public static BasicJwtAuthenticationToken authenticated(String userId, String username, String commaSeparatedAuthorities)
+  {
+    BasicJwtAuthenticationToken auth = new BasicJwtAuthenticationToken(userId, null, commaSeparatedAuthorities);
+    auth.setDetails(username);
+    return auth;
+  }
 
-    @Override
-    public Object getPrincipal() {
-        return this.userId;
-    }
+  @Override
+  public Object getCredentials()
+  {
+    return this.username;
+  }
 
-    @Override
-    public boolean isAuthenticated() {
-        return true;
-    }
+  @Override
+  public Object getPrincipal()
+  {
+    return this.userId;
+  }
+
+  @Override
+  public boolean isAuthenticated()
+  {
+    return true;
+  }
 }

@@ -13,17 +13,18 @@ import java.util.UUID;
 @Data
 @Table(name = "ecommerce_order")
 @Entity
-public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public class Order
+{
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    private UUID customerId;
-    private Date orderDate;
-    private BigDecimal amount;
-    private String history;
-    private UUID paymentTransactionId;
+  private UUID customerId;
+  private Date orderDate;
+  private BigDecimal amount;
+  private String history;
+  private UUID paymentTransactionId;
 
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+  @Enumerated(EnumType.STRING)
+  private OrderStatus status;
 }

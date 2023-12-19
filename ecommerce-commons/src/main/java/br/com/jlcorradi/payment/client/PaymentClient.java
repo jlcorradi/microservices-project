@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "paymentClient", url = "${client-services-urls.payment-service}/api/v1/payments")
-public interface PaymentClient {
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    PaymentTransactionDto makePayment(@RequestBody CreatePaymentTransactionRequest request);
+public interface PaymentClient
+{
+  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  PaymentTransactionDto makePayment(@RequestBody CreatePaymentTransactionRequest request);
 }

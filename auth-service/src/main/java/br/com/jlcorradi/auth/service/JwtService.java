@@ -22,64 +22,69 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class JwtService {
+public class JwtService
+{
 
-    private final ActiveTokenRepository repository;
-    private final int tokenDurationInMilliseconds;
-    private final String jwtTokenSecret;
-    private final EcommerceUserRepository userRepository;
-    private final ModelMapper mapper;
-    private final JwtValidator jwtValidator;
+  private final ActiveTokenRepository repository;
+  private final int tokenDurationInMilliseconds;
+  private final String jwtTokenSecret;
+  private final EcommerceUserRepository userRepository;
+  private final ModelMapper mapper;
+  private final JwtValidator jwtValidator;
 
-    public JwtService(
-            ActiveTokenRepository repository,
-            @Value("${authService.tokenDurationInMillis}") int tokenDurationInMilliseconds,
-            @Value("${authService.jwtTokenSecret}") String jwtTokenSecret,
-            EcommerceUserRepository userRepository,
-            ModelMapper mapper,
-            JwtValidator jwtValidator) {
-        this.repository = repository;
-        this.tokenDurationInMilliseconds = tokenDurationInMilliseconds;
-        this.jwtTokenSecret = jwtTokenSecret;
-        this.userRepository = userRepository;
-        this.mapper = mapper;
-        this.jwtValidator = jwtValidator;
-    }
+  public JwtService(
+      ActiveTokenRepository repository,
+      @Value("${authService.tokenDurationInMillis}") int tokenDurationInMilliseconds,
+      @Value("${authService.jwtTokenSecret}") String jwtTokenSecret,
+      EcommerceUserRepository userRepository,
+      ModelMapper mapper,
+      JwtValidator jwtValidator)
+  {
+    this.repository = repository;
+    this.tokenDurationInMilliseconds = tokenDurationInMilliseconds;
+    this.jwtTokenSecret = jwtTokenSecret;
+    this.userRepository = userRepository;
+    this.mapper = mapper;
+    this.jwtValidator = jwtValidator;
+  }
 
-    @Transactional
-    public String retrieveOrCreateTokenForUser(EcommerceUser user) {
-        return repository.findActiveTokenByUser(user)
-                .stream()
-                .filter(activeToken -> activeToken.getExpirationDate().after(new Date(System.currentTimeMillis())))
-                .findFirst()
-                .map(ActiveToken::getToken)
-                .orElseGet(() -> createNewToken(user));
-    }
+  @Transactional
+  public String retrieveOrCreateTokenForUser(EcommerceUser user)
+  {
+    return repository.findActiveTokenByUser(user)
+        .stream()
+        .filter(activeToken -> activeToken.getExpirationDate().after(new Date(System.currentTimeMillis())))
+        .findFirst()
+        .map(ActiveToken::getToken)
+        .orElseGet(() -> createNewToken(user));
+  }
 
-    private String createNewToken(EcommerceUser user) {
-        repository.markOtherTokensAsInactive(user);
+  private String createNewToken(EcommerceUser user)
+  {
+    repository.markOtherTokensAsInactive(user);
 
-        Date expiration = new Date(System.currentTimeMillis() + tokenDurationInMilliseconds);
-        JwtBuilder jwtBuilder = Jwts.builder()
-                .signWith(Keys.hmacShaKeyFor(jwtTokenSecret.getBytes(StandardCharsets.UTF_8)))
-                .issuedAt(new Date())
-                .expiration(expiration)
-                .subject(user.getUsername())
-                .claim(Constants.AUTHORITIES_JWT_CLAIM, user.getCommaSeparatedAuthorities())
-                .claim(Constants.USER_ID_JWT_CLAIM, user.getId());
-        String jwt = jwtBuilder.compact();
-        ActiveToken activeToken = ActiveToken.of(UUID.randomUUID(), user, jwt, expiration, true);
-        activeToken = repository.save(activeToken);
+    Date expiration = new Date(System.currentTimeMillis() + tokenDurationInMilliseconds);
+    JwtBuilder jwtBuilder = Jwts.builder()
+        .signWith(Keys.hmacShaKeyFor(jwtTokenSecret.getBytes(StandardCharsets.UTF_8)))
+        .issuedAt(new Date())
+        .expiration(expiration)
+        .subject(user.getUsername())
+        .claim(Constants.AUTHORITIES_JWT_CLAIM, user.getCommaSeparatedAuthorities())
+        .claim(Constants.USER_ID_JWT_CLAIM, user.getId());
+    String jwt = jwtBuilder.compact();
+    ActiveToken activeToken = ActiveToken.of(UUID.randomUUID(), user, jwt, expiration, true);
+    activeToken = repository.save(activeToken);
 
-        return activeToken.getToken();
-    }
+    return activeToken.getToken();
+  }
 
-    public EcommerceUserDto validateToken(String accessToken) {
-        Claims claims = jwtValidator.validateJwtToken(accessToken);
-        return userRepository.findByUsername(claims.getSubject())
-                .map(user -> repository.findActiveTokenByUserAndToken(user, accessToken))
-                .flatMap(activeToken -> activeToken)
-                .map(activeToken -> mapper.map(activeToken.getUser(), EcommerceUserDto.class))
-                .orElseThrow(UnauthorizedTokenException::new);
-    }
+  public EcommerceUserDto validateToken(String accessToken)
+  {
+    Claims claims = jwtValidator.validateJwtToken(accessToken);
+    return userRepository.findByUsername(claims.getSubject())
+        .map(user -> repository.findActiveTokenByUserAndToken(user, accessToken))
+        .flatMap(activeToken -> activeToken)
+        .map(activeToken -> mapper.map(activeToken.getUser(), EcommerceUserDto.class))
+        .orElseThrow(UnauthorizedTokenException::new);
+  }
 }

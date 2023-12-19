@@ -12,12 +12,13 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EcommerceUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public class EcommerceUser
+{
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    private String username;
-    private String encodedPassword;
-    private String commaSeparatedAuthorities;
+  private String username;
+  private String encodedPassword;
+  private String commaSeparatedAuthorities;
 }

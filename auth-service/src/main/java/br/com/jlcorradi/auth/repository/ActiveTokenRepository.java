@@ -11,12 +11,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ActiveTokenRepository extends JpaRepository<ActiveToken, UUID> {
-    List<ActiveToken> findActiveTokenByUser(EcommerceUser user);
+public interface ActiveTokenRepository extends JpaRepository<ActiveToken, UUID>
+{
+  List<ActiveToken> findActiveTokenByUser(EcommerceUser user);
 
-    @Modifying
-    @Query("update ActiveToken  set active = false where user = :user")
-    void markOtherTokensAsInactive(@Param("user") EcommerceUser user);
+  @Modifying
+  @Query("update ActiveToken  set active = false where user = :user")
+  void markOtherTokensAsInactive(@Param("user") EcommerceUser user);
 
-    Optional<ActiveToken> findActiveTokenByUserAndToken(EcommerceUser user, String token);
+  Optional<ActiveToken> findActiveTokenByUserAndToken(EcommerceUser user, String token);
 }

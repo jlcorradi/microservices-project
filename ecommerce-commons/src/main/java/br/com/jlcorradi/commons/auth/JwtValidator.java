@@ -11,23 +11,26 @@ import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
 
 @Component
-public class JwtValidator {
+public class JwtValidator
+{
 
-    private final String jwtTokenSecret;
+  private final String jwtTokenSecret;
 
-    public JwtValidator(@Value("${authService.jwtTokenSecret}") String jwtTokenSecret) {
-        this.jwtTokenSecret = jwtTokenSecret;
+  public JwtValidator(@Value("${authService.jwtTokenSecret}") String jwtTokenSecret)
+  {
+    this.jwtTokenSecret = jwtTokenSecret;
+  }
+
+  public Claims validateJwtToken(String accessToken)
+  {
+    JwtParser parser = Jwts.parser()
+        .verifyWith(Keys.hmacShaKeyFor(jwtTokenSecret.getBytes(StandardCharsets.UTF_8)))
+        .build();
+
+    try {
+      return parser.parseSignedClaims(accessToken).getPayload();
+    } catch (Exception e) {
+      throw new UnauthorizedTokenException(e);
     }
-
-    public Claims validateJwtToken(String accessToken) {
-        JwtParser parser = Jwts.parser()
-                .verifyWith(Keys.hmacShaKeyFor(jwtTokenSecret.getBytes(StandardCharsets.UTF_8)))
-                .build();
-
-        try {
-            return parser.parseSignedClaims(accessToken).getPayload();
-        } catch (Exception e) {
-            throw new UnauthorizedTokenException(e);
-        }
-    }
+  }
 }

@@ -12,13 +12,14 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class OrderDto {
-    private UUID orderId;
-    private UUID customerId;
-    private Date orderDate;
-    private BigDecimal amount;
-    private String history;
-    private OrderStatus status;
-    private UUID paymentTransactionId;
+public class OrderDto
+{
+  private UUID orderId;
+  private UUID customerId;
+  private Date orderDate;
+  private BigDecimal amount;
+  private String history;
+  private OrderStatus status;
+  private UUID paymentTransactionId;
 
 }

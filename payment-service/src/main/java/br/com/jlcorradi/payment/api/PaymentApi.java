@@ -16,22 +16,24 @@ import java.util.UUID;
 
 /**
  * This class represents a RESTful API for handling payment transactions.
- *
+ * <p>
  * The PaymentApi class provides methods for creating payment transactions.
  */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/payments")
-public class PaymentApi {
-    private final PaymentTransactionService paymentTransactionService;
+public class PaymentApi
+{
+  private final PaymentTransactionService paymentTransactionService;
 
-    @PostMapping
-    public ResponseEntity<PaymentTransactionDto> createPaymentTransaction(
-            @Valid @RequestBody CreatePaymentTransactionRequest request,
-            BasicJwtAuthenticationToken principal
-    ) {
-        PaymentTransactionDto paymentTransaction = paymentTransactionService.createPaymentTransaction(request,
-                UUID.fromString(principal.getUserId()));
-        return ResponseEntity.ok(paymentTransaction);
-    }
+  @PostMapping
+  public ResponseEntity<PaymentTransactionDto> createPaymentTransaction(
+      @Valid @RequestBody CreatePaymentTransactionRequest request,
+      BasicJwtAuthenticationToken principal
+  )
+  {
+    PaymentTransactionDto paymentTransaction = paymentTransactionService.createPaymentTransaction(request,
+        UUID.fromString(principal.getUserId()));
+    return ResponseEntity.ok(paymentTransaction);
+  }
 }

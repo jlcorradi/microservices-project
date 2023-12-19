@@ -1,4 +1,5 @@
 package br.com.jlcorradi.auth.dto;
 
-public record LoginResponse(String accessToken) {
+public record LoginResponse(String accessToken)
+{
 }

@@ -16,24 +16,27 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @ControllerAdvice
-public class BadRequestErrorHandling {
+public class BadRequestErrorHandling
+{
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> result = ex.getBindingResult().getAllErrors().stream()
-                .collect(Collectors.toMap(
-                        err -> (err instanceof FieldError fieldError) ? fieldError.getField() : err.getObjectName(),
-                        objectError -> Optional.ofNullable(objectError.getDefaultMessage())
-                                .orElse("No message provided"))
-                );
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex)
+  {
+    Map<String, String> result = ex.getBindingResult().getAllErrors().stream()
+        .collect(Collectors.toMap(
+            err -> (err instanceof FieldError fieldError) ? fieldError.getField() : err.getObjectName(),
+            objectError -> Optional.ofNullable(objectError.getDefaultMessage())
+                .orElse("No message provided"))
+        );
 
-        return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-    }
+    return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+  }
 
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(UnauthorizedTokenException.class)
-    public void handleUnauthorizedException(UnauthorizedTokenException ex) {
-        log.debug("Unauthorized: {}", ex.getMessage());
-    }
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  @ExceptionHandler(UnauthorizedTokenException.class)
+  public void handleUnauthorizedException(UnauthorizedTokenException ex)
+  {
+    log.debug("Unauthorized: {}", ex.getMessage());
+  }
 
 }

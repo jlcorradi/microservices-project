@@ -9,10 +9,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @WithCommons
 @WithStaticJwtSecurity
 @SpringBootApplication
-public class PaymentServiceApplication {
-    public static void main(String[] args) {
-        SpringApplication springApplication = new SpringApplication(PaymentServiceApplication.class);
-        springApplication.addListeners(new SystemInfoApplicationListener());
-        springApplication.run(args);
-    }
+public class PaymentServiceApplication
+{
+  public static void main(String[] args)
+  {
+    SpringApplication springApplication = new SpringApplication(PaymentServiceApplication.class);
+    springApplication.addListeners(new SystemInfoApplicationListener());
+    springApplication.run(args);
+  }
 }

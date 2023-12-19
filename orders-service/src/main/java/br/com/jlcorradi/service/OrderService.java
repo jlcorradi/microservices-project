@@ -6,8 +6,9 @@ import br.com.jlcorradi.orders.dto.OrderDto;
 import java.util.List;
 import java.util.UUID;
 
-public interface OrderService {
-    OrderDto placeOrder(CreateOrderRequest order, UUID userId);
+public interface OrderService
+{
+  OrderDto placeOrder(CreateOrderRequest order, UUID userId);
 
-    List<OrderDto> listPendingOrders(UUID uuid);
+  List<OrderDto> listPendingOrders(UUID uuid);
 }

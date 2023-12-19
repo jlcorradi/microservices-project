@@ -7,10 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @WithCommons
-public class AuthServiceApplication {
-    public static void main(String[] args) {
-        SpringApplication springApplication = new SpringApplication(AuthServiceApplication.class);
-        springApplication.addListeners(new SystemInfoApplicationListener());
-        springApplication.run(args);
-    }
+public class AuthServiceApplication
+{
+  public static void main(String[] args)
+  {
+    SpringApplication springApplication = new SpringApplication(AuthServiceApplication.class);
+    springApplication.addListeners(new SystemInfoApplicationListener());
+    springApplication.run(args);
+  }
 }

@@ -6,9 +6,10 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-public class CreateOrderRequest {
-    @NotNull
-    private BigDecimal amount;
-    @NotNull
-    private String history;
+public class CreateOrderRequest
+{
+  @NotNull
+  private BigDecimal amount;
+  @NotNull
+  private String history;
 }

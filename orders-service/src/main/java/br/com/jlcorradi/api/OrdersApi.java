@@ -18,23 +18,26 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/orders")
-public class OrdersApi {
+public class OrdersApi
+{
 
-    private final OrderService orderService;
+  private final OrderService orderService;
 
-    @PostMapping
-    public ResponseEntity<OrderDto> createOrder(
-            @RequestBody @Validated CreateOrderRequest request,
-            BasicJwtAuthenticationToken principal) {
-        OrderDto order = orderService.placeOrder(request, UUID.fromString(principal.getUserId()));
-        log.info("Order created: {}", order);
-        return ResponseEntity.status(HttpStatus.CREATED).body(order);
-    }
+  @PostMapping
+  public ResponseEntity<OrderDto> createOrder(
+      @RequestBody @Validated CreateOrderRequest request,
+      BasicJwtAuthenticationToken principal)
+  {
+    OrderDto order = orderService.placeOrder(request, UUID.fromString(principal.getUserId()));
+    log.info("Order created: {}", order);
+    return ResponseEntity.status(HttpStatus.CREATED).body(order);
+  }
 
-    @GetMapping
-    public ResponseEntity<List<OrderDto>> listPendingOrders(BasicJwtAuthenticationToken principal) {
-        List<OrderDto> orders = orderService.listPendingOrders(UUID.fromString(principal.getUserId()));
-        return ResponseEntity.ok(orders);
-    }
+  @GetMapping
+  public ResponseEntity<List<OrderDto>> listPendingOrders(BasicJwtAuthenticationToken principal)
+  {
+    List<OrderDto> orders = orderService.listPendingOrders(UUID.fromString(principal.getUserId()));
+    return ResponseEntity.ok(orders);
+  }
 
 }

@@ -9,14 +9,15 @@ import java.util.Date;
 import java.util.UUID;
 
 @Data
-public class PaymentTransactionDto {
-    private UUID orderId;
-    private UUID customerId;
-    private Date transactionDate;
-    private BigDecimal amount;
-    private PaymentMode paymentMode;
+public class PaymentTransactionDto
+{
+  private UUID orderId;
+  private UUID customerId;
+  private Date transactionDate;
+  private BigDecimal amount;
+  private PaymentMode paymentMode;
 
-    private PaymentTransactionStatus status;
-    private UUID transactionCode;
-    private String sanitizedCcNumber;
+  private PaymentTransactionStatus status;
+  private UUID transactionCode;
+  private String sanitizedCcNumber;
 }

@@ -14,28 +14,30 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class CreatePaymentTransactionRequest {
-    @NotNull
-    private UUID orderId;
-    @NotNull
-    private BigDecimal amount;
-    @NotNull
-    private PaymentMode paymentMode;
-    @NotNull
-    private PaymentInfo paymentInfo;
+public class CreatePaymentTransactionRequest
+{
+  @NotNull
+  private UUID orderId;
+  @NotNull
+  private BigDecimal amount;
+  @NotNull
+  private PaymentMode paymentMode;
+  @NotNull
+  private PaymentInfo paymentInfo;
 
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Data
-    public static class PaymentInfo {
-        @NotNull
-        private String ccNumber;
-        @NotNull
-        private String ccHolderName;
-        @NotNull
-        private String ccExpiration;
-        @NotNull
-        private String ccCvv;
-    }
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @Data
+  public static class PaymentInfo
+  {
+    @NotNull
+    private String ccNumber;
+    @NotNull
+    private String ccHolderName;
+    @NotNull
+    private String ccExpiration;
+    @NotNull
+    private String ccCvv;
+  }
 }

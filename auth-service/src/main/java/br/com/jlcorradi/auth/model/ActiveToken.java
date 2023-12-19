@@ -13,18 +13,19 @@ import java.util.UUID;
 @Table(name = "active_token")
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
-public class ActiveToken {
+public class ActiveToken
+{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private EcommerceUser user;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private EcommerceUser user;
 
-    @Column(length = 2000)
-    private String token;
-    private Date expirationDate;
-    private boolean active;
+  @Column(length = 2000)
+  private String token;
+  private Date expirationDate;
+  private boolean active;
 }

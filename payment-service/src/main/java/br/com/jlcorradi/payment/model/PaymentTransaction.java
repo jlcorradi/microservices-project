@@ -16,19 +16,20 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentTransaction {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public class PaymentTransaction
+{
+  @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private UUID id;
 
-    private UUID orderId;
-    private UUID customerId;
-    private Date transactionDate;
-    private BigDecimal amount;
-    @Enumerated(EnumType.STRING)
-    private PaymentMode paymentMode;
-    @Enumerated(EnumType.STRING)
-    private PaymentTransactionStatus status;
-    private UUID transactionCode;
-    private String sanitizedCcNumber;
+  private UUID orderId;
+  private UUID customerId;
+  private Date transactionDate;
+  private BigDecimal amount;
+  @Enumerated(EnumType.STRING)
+  private PaymentMode paymentMode;
+  @Enumerated(EnumType.STRING)
+  private PaymentTransactionStatus status;
+  private UUID transactionCode;
+  private String sanitizedCcNumber;
 }

@@ -13,5 +13,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Import({CommonConfig.class, BadRequestErrorHandling.class, JwtValidator.class, FeignClientInterceptorConfig.class})
-public @interface WithCommons {
+public @interface WithCommons
+{
 }

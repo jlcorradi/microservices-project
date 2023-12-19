@@ -5,6 +5,19 @@ authService:
   tokenDurationInMillis: 86400000
   jwtTokenSecret: RW50ZXIgdGhlIG1hdHJpeC4gSXQncyBhIGZhY2VzaXRpbmcgd29ybGQgb3V0IHRoZXIh
 
+management:
+  observations:
+    key-values:
+      application: ${spring.application.name}
+  endpoints:
+    enabled-by-default: true
+    jmx:
+      exposure:
+        include: '*'
+    web:
+      exposure:
+        include: [ "health", "info", "metrics", "prometheus", "bindings", "beans", "env", "loggers" ]
+
 spring:
   application:
     name: Authentication Service
