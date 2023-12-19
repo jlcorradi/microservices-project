@@ -33,7 +33,7 @@ public class PaymentApi
   )
   {
     PaymentTransactionDto paymentTransaction = paymentTransactionService.createPaymentTransaction(request,
-        UUID.fromString(principal.getPrincipal().toString()));
+        UUID.fromString(principal.getUserId()));
     return ResponseEntity.ok(paymentTransaction);
   }
 }

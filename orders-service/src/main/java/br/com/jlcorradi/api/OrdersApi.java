@@ -28,7 +28,7 @@ public class OrdersApi
       @RequestBody @Validated CreateOrderRequest request,
       BasicJwtAuthenticationToken principal)
   {
-    OrderDto order = orderService.placeOrder(request, UUID.fromString(principal.getPrincipal().toString()));
+    OrderDto order = orderService.placeOrder(request, UUID.fromString(principal.getUserId()));
     log.info("Order created: {}", order);
     return ResponseEntity.status(HttpStatus.CREATED).body(order);
   }
@@ -36,7 +36,7 @@ public class OrdersApi
   @GetMapping
   public ResponseEntity<List<OrderDto>> listPendingOrders(BasicJwtAuthenticationToken principal)
   {
-    List<OrderDto> orders = orderService.listPendingOrders(UUID.fromString(principal.getPrincipal().toString()));
+    List<OrderDto> orders = orderService.listPendingOrders(UUID.fromString(principal.getUserId()));
     return ResponseEntity.ok(orders);
   }
 

@@ -12,12 +12,13 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class BasicJwtAuthenticationToken extends AbstractAuthenticationToken
 {
-  private final String userId;
   private final String token;
 
   @Getter
   @Setter
   private String username;
+  @Getter
+  private final String userId;
 
   private BasicJwtAuthenticationToken(String userId, String token, String commaSeparatedAuthorities)
   {
