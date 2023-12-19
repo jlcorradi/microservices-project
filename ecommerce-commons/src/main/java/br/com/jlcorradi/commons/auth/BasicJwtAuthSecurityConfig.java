@@ -23,6 +23,9 @@ public class BasicJwtAuthSecurityConfig
   public SecurityFilterChain config(HttpSecurity http) throws Exception
   {
     log.info("Using Basic Static Jwt based security");
+
+    BasicJwtSecurityHttpConfigurer basicJwtSecurityHttpConfigurer = new BasicJwtSecurityHttpConfigurer(jwtValidator);
+
     return http
         .httpBasic(AbstractHttpConfigurer::disable)
         .csrf(AbstractHttpConfigurer::disable)
@@ -33,7 +36,7 @@ public class BasicJwtAuthSecurityConfig
           authorize.requestMatchers("/actuator", "/actuator/**").permitAll();
           authorize.anyRequest().authenticated();
         })
-        .with(new BasicJwtSecurityHttpConfigurer(jwtValidator), Customizer.withDefaults())
+        .with(basicJwtSecurityHttpConfigurer, Customizer.withDefaults())
         .authenticationProvider(new BasicJwtAuthenticationProvider(jwtValidator))
         .build();
   }

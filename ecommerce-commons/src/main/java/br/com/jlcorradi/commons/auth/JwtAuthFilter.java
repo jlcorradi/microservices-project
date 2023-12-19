@@ -42,6 +42,7 @@ public class JwtAuthFilter extends OncePerRequestFilter
         .map(BasicJwtAuthenticationToken::unauthenticated)
         .orElseThrow(UnauthorizedTokenException::new);
 
+    // Authenticate
     Authentication auth = authenticationManager.authenticate(authRequest);
     SecurityContext newContext = SecurityContextHolder.createEmptyContext();
     newContext.setAuthentication(auth);
@@ -49,6 +50,7 @@ public class JwtAuthFilter extends OncePerRequestFilter
 
     MDC.put("userId", auth.getPrincipal().toString());
 
+    // Next
     filterChain.doFilter(request, response);
   }
 
