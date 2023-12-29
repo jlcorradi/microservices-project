@@ -5,7 +5,7 @@ authService:
   jwtTokenSecret: RW50ZXIgdGhlIG1hdHJpeC4gSXQncyBhIGZhY2VzaXRpbmcgd29ybGQgb3V0IHRoZXIh
 
 client-services-urls:
-  payment-service: http://localhost:8082
+  payment-service: http://localhost:8084
 
 management:
   observations:
@@ -35,4 +35,6 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-
+logging:
+  level:
+    br.com.jlcorradi: TRACE

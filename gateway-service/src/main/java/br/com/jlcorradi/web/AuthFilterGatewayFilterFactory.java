@@ -6,6 +6,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -54,10 +55,8 @@ public class AuthFilterGatewayFilterFactory extends AbstractGatewayFilterFactory
           .uri(String.format("%s/api/v1/auth?accessToken=%s&uri=%s",
               usersServiceBaseUrl, authHeader, exchange.getRequest().getURI()))
           .retrieve()
-          .onStatus(httpStatusCode -> httpStatusCode.equals(HttpStatus.UNAUTHORIZED), clientResponse ->
+          .onStatus(HttpStatusCode::is4xxClientError, clientResponse ->
               Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED)))
-          .onStatus(httpStatusCode -> httpStatusCode.equals(HttpStatus.FORBIDDEN), clientResponse ->
-              Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN)))
           .bodyToMono(UserDto.class)
           .flatMap(userDto ->
           {

@@ -33,8 +33,7 @@ public class PrimaryOrderService implements OrderService
   {
     Order newOrder = createOrder(order, userId);
     try {
-      PaymentTransactionDto paymentTransactionDto =
-          paymentClient.makePayment(resolvePaymentTransactionRequest(newOrder));
+      PaymentTransactionDto paymentTransactionDto = paymentClient.makePayment(resolvePaymentTransactionRequest(newOrder));
       newOrder = updatePaymentInfo(newOrder, paymentTransactionDto.getTransactionCode());
     } catch (Exception e) {
       newOrder.setStatus(OrderStatus.AWAITING_PAYMENT);

@@ -1,5 +1,7 @@
 package br.com.jlcorradi.commons.web;
 
+import br.com.jlcorradi.commons.ErrorPayload;
+import br.com.jlcorradi.commons.exception.EcommerceExcepion;
 import br.com.jlcorradi.commons.exception.UnauthorizedTokenException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @ControllerAdvice
-public class BadRequestErrorHandling
+public class DefaultApiErrorHandler
 {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -39,4 +41,27 @@ public class BadRequestErrorHandling
     log.debug("Unauthorized: {}", ex.getMessage());
   }
 
+  @ExceptionHandler(EcommerceExcepion.class)
+  public ResponseEntity<ErrorPayload> handleGenericException(EcommerceExcepion ex)
+  {
+    log.debug("Ecommerce Exception: {}", ex.getCause(), ex.getCause());
+    ErrorPayload errorPayload = new ErrorPayload(ex.getMessage());
+    return ResponseEntity
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(errorPayload);
+  }
+
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  @ExceptionHandler(RuntimeException.class)
+  public ResponseEntity<ErrorPayload> handleUnauthorizedException(RuntimeException ex)
+  {
+    log.error("Unhandled Internal Exception", ex);
+    log.debug("Ecommerce Exception: {}", ex.getCause(), ex.getCause());
+    ErrorPayload errorPayload = new ErrorPayload("Internal Error");
+    return ResponseEntity
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(errorPayload);
+  }
+
 }
+

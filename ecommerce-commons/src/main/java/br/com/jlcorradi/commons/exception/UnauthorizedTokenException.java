@@ -1,12 +1,14 @@
 package br.com.jlcorradi.commons.exception;
 
-import lombok.NoArgsConstructor;
-
-@NoArgsConstructor
-public class UnauthorizedTokenException extends RuntimeException
+public class UnauthorizedTokenException extends EcommerceExcepion
 {
   public UnauthorizedTokenException(Throwable e)
   {
-    super(e);
+    super("Unauthorized", e);
+  }
+
+  public UnauthorizedTokenException()
+  {
+    super("Unauthorized", null);
   }
 }
