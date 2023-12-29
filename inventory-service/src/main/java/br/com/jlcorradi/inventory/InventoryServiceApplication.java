@@ -1,5 +1,6 @@
 package br.com.jlcorradi.inventory;
 
+import br.com.jlcorradi.commons.SystemInfoApplicationListener;
 import br.com.jlcorradi.commons.config.WithCommons;
 import br.com.jlcorradi.commons.config.WithStaticJwtSecurity;
 import org.springframework.boot.SpringApplication;
@@ -12,6 +13,8 @@ public class InventoryServiceApplication
 {
   public static void main(String[] args)
   {
-    SpringApplication.run(InventoryServiceApplication.class, args);
+    SpringApplication application = new SpringApplication(InventoryServiceApplication.class);
+    application.addListeners(new SystemInfoApplicationListener());
+    application.run(args);
   }
 }

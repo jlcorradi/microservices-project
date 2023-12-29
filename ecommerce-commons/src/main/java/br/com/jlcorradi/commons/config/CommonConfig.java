@@ -5,10 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @Slf4j
 @Configuration
+@Import(MessagingConfiguration.class)
 public class CommonConfig
 {
 

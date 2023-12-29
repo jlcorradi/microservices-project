@@ -1,9 +1,13 @@
 server:
-  port: 8084
+  port: 8085
+
+## This is important if you'll use FeignClient
+client-services-urls:
+  gateway-service: ${GATEWAY_SERVICE_URL}
+
 
 authService:
   jwtTokenSecret: ${JWT_TOKEN_SECRET}
-
 
 management:
   observations:
@@ -20,15 +24,12 @@ management:
 
 spring:
   application:
-    name: Payment Service
+    name: Application Name
   datasource:
     url: ${JDBC_URL}
     username: ${JDBC_USERNAME}
     password: ${JDBC_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
   rabbitmq:
     addresses: localhost:5672
     username: rabbit
@@ -37,4 +38,6 @@ spring:
 
 eventArchitecture:
   exchange-event-name: ecommerce.event
+  payment-status-change-routing-key: payment.onPaymentStatusChange
+  payment-status-change-notification-queue: notification.onPaymentStatusChange
 

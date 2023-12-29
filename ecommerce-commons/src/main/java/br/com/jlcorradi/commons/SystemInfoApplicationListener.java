@@ -21,6 +21,9 @@ public class SystemInfoApplicationListener implements ApplicationListener<Applic
     log.info("Datasource Connection: {}", event.getEnvironment().getProperty("spring.datasource.url"));
     log.info("Connection Pool: {}", event.getEnvironment().getProperty("spring.datasource.hikari.pool-name"));
     log.info("Connection Pool size: {}", event.getEnvironment().getProperty("spring.datasource.hikari.maximum-pool-size"));
+
+    log.info("Rabbit MQ Addresses: {}", event.getEnvironment().getProperty("spring.rabbitmq.addresses"));
+
   }
 
   private String getRuntimeMaxHeapSize()

@@ -12,7 +12,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({CommonConfig.class, BadRequestErrorHandling.class, DefaultJwtValidator.class, FeignClientInterceptorConfig.class})
+@Import({CommonConfig.class, BadRequestErrorHandling.class, DefaultJwtValidator.class,
+    FeignClientInterceptorConfig.class})
 public @interface WithCommons
 {
 }

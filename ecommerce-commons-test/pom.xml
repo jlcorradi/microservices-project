@@ -27,6 +27,7 @@
         <dependency>
             <groupId>br.com.jlcorradi</groupId>
             <artifactId>ecommerce-commons</artifactId>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

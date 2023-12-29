@@ -1,5 +1,5 @@
 server:
-  port: ${SERVICE_PORT}
+  port: 8083
 
 ## This is important if you'll use FeignClient
 client-services-urls:

@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+import static br.com.jlcorradi.orders.OrdersRoutingConstants.ORDERS_API_V1_URL;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/orders")
+@RequestMapping(ORDERS_API_V1_URL)
 public class OrdersApi
 {
 

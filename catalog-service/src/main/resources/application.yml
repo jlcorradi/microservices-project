@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8082
 
 authService:
   jwtTokenSecret: RW50ZXIgdGhlIG1hdHJpeC4gSXQncyBhIGZhY2VzaXRpbmcgd29ybGQgb3V0IHRoZXIh

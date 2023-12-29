@@ -1,16 +1,47 @@
-version: '3.3'
+version: '3'
+
+networks:
+  monitoring:
+    driver: bridge
+
 services:
   prometheus:
     extra_hosts:
       - 'host.docker.internal:host-gateway'
-    image: 'prom/prometheus:v2.14.0'
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    expose:
+      - 9090
     ports:
       - '9090:9090'
-    command: '--config.file=/etc/prometheus/config/prometheus.yml'
-    volumes:
-      - './config/:/etc/prometheus/config'
+    networks:
+      - monitoring
 
   grafana:
-    image: 'grafana/grafana:6.5.0'
+    image: grafana/grafana:latest
+    networks:
+      - monitoring
     ports:
       - '3000:3000'
+    volumes:
+      - ./grafana_data:/var/lib/grafana
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbit
+      - RABBITMQ_DEFAULT_PASS=rabbit

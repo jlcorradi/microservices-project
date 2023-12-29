@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
+import static br.com.jlcorradi.payment.PaymentRoutingConstants.PAYMENTS_API_URL;
+
 /**
  * This class represents a RESTful API for handling payment transactions.
  * <p>
@@ -21,7 +23,7 @@ import java.util.UUID;
  */
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/payments")
+@RequestMapping(PAYMENTS_API_URL)
 public class PaymentApi
 {
   private final PaymentTransactionService paymentTransactionService;

@@ -43,6 +43,7 @@ Commons project structure:
 The following dependencies must be imported in the pom:
 
 ```xml
+
 <dependencies>
     <dependency>
         <groupId>br.com.jlcorradi</groupId>
@@ -72,18 +73,43 @@ The following dependencies must be imported in the pom:
     </dependency>
 
     <dependency>
-        <groupId>org.modelmapper</groupId>
-        <artifactId>modelmapper</artifactId>
-    </dependency>
-
-    <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+
+
+    <!--    Test Dependencies-->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <scope>runtime</scope>
+    </dependency>
+    <dependency>
+        <groupId>dev.jlcorradi</groupId>
+        <artifactId>ecommerce-commons-test</artifactId>
+        <version>${project.version}</version>
+        <scope>test</scope>
     </dependency>
 </dependencies>
 ```
 
-The following settings must be in the applicaiton.yml:
+In case the Service receives/sends messages Include the ampq dependencies:
+
+```xml
+
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-amqp</artifactId>
+    <scope>provided</scope>
+</dependency>
+```
+
+The following settings must be in the application.yml:
 
 ```yml
 server:
@@ -91,7 +117,7 @@ server:
 
 ## This is important if you'll use FeignClient
 client-services-urls:
-   gateway-service: ${GATEWAY_SERVICE_URL}
+  gateway-service: ${GATEWAY_SERVICE_URL}
 
 
 authService:
@@ -109,10 +135,10 @@ management:
     web:
       exposure:
         include: "health,info,prometheus"
-        
+
 spring:
   application:
-      name: Application Name
+    name: Application Name
   datasource:
     url: ${JDBC_URL}
     username: ${JDBC_USERNAME}
@@ -120,19 +146,35 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 ```
 
+In case the Service receives/sends messages Include the rabbit MQ configuration:
+
+````yml
+spring:
+  rabbitmq:
+    addresses: localhost:5672
+    username: rabbit
+    password: rabbit
+````
+
+* Important: The ``Exchange`` and ```RabbitTemplate``` objects will be added to spring context only if at least
+* ```spring.rabbitmq.addresses``` property is set.
+
 You can also include nice system information logs on startup by adding the ```SystemInfoApplicationListener``` to
 the application on startup:
 
 ```java
+
 @SpringBootApplication
 @WithCommons
 @WithStaticJwtSecurity
-public class ServiceApplication {
-    public static void main(String[] args) {
-        SpringApplication springApplication = new SpringApplication(ServiceApplication.class);
-        springApplication.addListeners(new SystemInfoApplicationListener());
-        springApplication.run(args);
-    }
+public class ServiceApplication
+{
+  public static void main(String[] args)
+  {
+    SpringApplication springApplication = new SpringApplication(ServiceApplication.class);
+    springApplication.addListeners(new SystemInfoApplicationListener());
+    springApplication.run(args);
+  }
 }
 ```
 
@@ -161,33 +203,68 @@ with the jwt token which will statically verify the token and resolve the userna
 You can inject ```BasicJwtAuthenticationToken``` in your request method to have access to it:
 
 ```java
+
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class BasicJwtAuthenticationToken extends AbstractAuthenticationToken {
+public class BasicJwtAuthenticationToken extends AbstractAuthenticationToken
+{
    ...
 }
 ```
 
-You can configure Basic JWT authentication adding ```.with(new BasicJwtSecurityHttpConfigurer(jwtValidator), Customizer.withDefaults())```
+You can configure Basic JWT authentication
+adding ```.with(new BasicJwtSecurityHttpConfigurer(jwtValidator), Customizer.withDefaults())```
 to your security filter chain like so:
 
 ```java
+
 @Bean
 public SecurityFilterChain config(HttpSecurity http) throws Exception
 {
   log.info("Using Basic Static Jwt based security");
 
   return http
-          .httpBasic(AbstractHttpConfigurer::disable)
-          .csrf(AbstractHttpConfigurer::disable)
-          .formLogin(AbstractHttpConfigurer::disable)
-          .sessionManagement(cfg -> cfg.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-          .authorizeHttpRequests(authorize ->
-          {
-            authorize.requestMatchers("/actuator", "/actuator/**").permitAll();
-            authorize.anyRequest().authenticated();
-          })
-          .with(new BasicJwtSecurityHttpConfigurer(), jwt -> jwt.withJwtValidator(jwtValidator))
-          .build();
+      .httpBasic(AbstractHttpConfigurer::disable)
+      .csrf(AbstractHttpConfigurer::disable)
+      .formLogin(AbstractHttpConfigurer::disable)
+      .sessionManagement(cfg -> cfg.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+      .authorizeHttpRequests(authorize ->
+      {
+        authorize.requestMatchers("/actuator", "/actuator/**").permitAll();
+        authorize.anyRequest().authenticated();
+      })
+      .with(new BasicJwtSecurityHttpConfigurer(), jwt -> jwt.withJwtValidator(jwtValidator))
+      .build();
 }
 ```
+
+## Conventions - Constants
+
+The constants that represents routes in the microservices must be defined as constants in a class
+named ```{Service}RoutingConstants``` in the ecommerce-commons project. That way the same value will be used in the 
+Feign Clients and Api Controllers across the ecosystem. What should be declared:
+- Api URLS
+- Rabbit MQ Routing Keys.
+
+Ex:
+```java
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class PaymentRoutingConstants
+{
+  public static final String PAYMENTS_API_URL = "/api/v1/payments";
+  public static final String PAYMENT_STATUS_CHANGE_ROUTING_KEY = "payment.onPaymentStatusChange";
+}
+
+```
+
+### Services and ports
+
+The services are set up to run on the following ports:
+
+- OrdersServiceApplication :8080/
+- GatewayServiceApplication :8090/
+- NotificationServiceApplication :8085/
+- CatalogServiceApplication :8082/
+- PaymentServiceApplication :8084/
+- InventoryServiceApplication :8083/
+- AuthServiceApplication :8081/
