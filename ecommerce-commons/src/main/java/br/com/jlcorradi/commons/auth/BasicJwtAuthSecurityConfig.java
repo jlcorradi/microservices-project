@@ -33,6 +33,10 @@ public class BasicJwtAuthSecurityConfig
           authorize.requestMatchers("/actuator", "/actuator/**").permitAll();
           authorize.anyRequest().authenticated();
         })
+        .exceptionHandling(ex -> ex
+            .authenticationEntryPoint(new BasicJwtAuthenticationEntryPoint())
+            .accessDeniedHandler(new BasicJwtAccessDeniedHandler())
+        )
         .with(new BasicJwtSecurityHttpConfigurer(), jwt -> jwt.withJwtValidator(jwtValidator))
         .build();
   }

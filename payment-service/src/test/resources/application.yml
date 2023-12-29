@@ -1,0 +1,21 @@
+server:
+  port: 0
+
+authService:
+  jwtTokenSecret: jwttokensecretverysecrettest
+
+
+spring:
+  datasource:
+    url: jdbc:h2:~/test;MODE=PostgreSQL;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+logging:
+  level:
+    org.springframework.security.web: INFO
+
+debug: false

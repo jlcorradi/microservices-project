@@ -18,7 +18,10 @@ management:
         include: '*'
     web:
       exposure:
-        include: "health,info,prometheus"
+        include: 'health,info,prometheus'
+metrics:
+  tags:
+    application: ${spring.application.name}
 
 spring:
   application:
@@ -32,5 +35,3 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-
-logging.level.br.com.jlcorradi.payment.client.PaymentClient: DEBUG

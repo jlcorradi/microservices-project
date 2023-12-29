@@ -1,6 +1,6 @@
 package br.com.jlcorradi;
 
-public class Main
+public class InvoiceServiceApplication
 {
   public static void main(String[] args)
   {

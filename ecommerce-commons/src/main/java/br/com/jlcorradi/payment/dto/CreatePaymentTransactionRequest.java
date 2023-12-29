@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 public class CreatePaymentTransactionRequest
 {
   @NotNull
@@ -39,5 +39,7 @@ public class CreatePaymentTransactionRequest
     private String ccExpiration;
     @NotNull
     private String ccCvv;
+    @NotNull
+    private String ccType;
   }
 }
