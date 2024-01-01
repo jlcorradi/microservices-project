@@ -18,3 +18,4 @@ public class InventoryServiceApplication
     application.run(args);
   }
 }
+

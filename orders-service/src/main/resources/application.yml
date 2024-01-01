@@ -19,9 +19,6 @@ management:
     web:
       exposure:
         include: 'health,info,prometheus'
-metrics:
-  tags:
-    application: ${spring.application.name}
 
 spring:
   application:
@@ -35,6 +32,14 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  rabbitmq:
+    addresses: localhost:5672
+    username: rabbit
+    password: rabbit
+
 logging:
   level:
     br.com.jlcorradi: TRACE
+
+eventArchitecture:
+  ecommerceEventExchange: ecommerce_event_topic

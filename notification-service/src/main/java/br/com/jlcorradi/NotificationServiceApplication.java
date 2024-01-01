@@ -3,6 +3,7 @@ package br.com.jlcorradi;
 import br.com.jlcorradi.commons.SystemInfoApplicationListener;
 import br.com.jlcorradi.commons.config.WithCommons;
 import br.com.jlcorradi.commons.config.WithStaticJwtSecurity;
+import br.com.jlcorradi.payment.PaymentRoutingConstants;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Exchange;
@@ -30,16 +31,13 @@ public class NotificationServiceApplication
 class EventConfig
 {
   private final String paymentStatusChangeQueue;
-  private final String onPaymentStatusChangeRoutingKey;
-  private final Exchange exchange;
+  private final Exchange ecommerceEventExchange;
 
-  EventConfig(@Value("${eventArchitecture.payment-status-change-notification-queue}") String paymentStatusChangeQueue,
-              @Value("${eventArchitecture.payment-status-change-routing-key}") String onPaymentStatusChangeRoutingKey,
-              Exchange exchange)
+  EventConfig(@Value("${eventArchitecture.notificationOnPaymentStatusChangeQueue}") String paymentStatusChangeQueue,
+              Exchange ecommerceEventExchange)
   {
     this.paymentStatusChangeQueue = paymentStatusChangeQueue;
-    this.onPaymentStatusChangeRoutingKey = onPaymentStatusChangeRoutingKey;
-    this.exchange = exchange;
+    this.ecommerceEventExchange = ecommerceEventExchange;
   }
 
   @Bean
@@ -53,8 +51,8 @@ class EventConfig
   {
     return BindingBuilder
         .bind(onPaymentStatusChangeQueue())
-        .to(exchange)
-        .with(onPaymentStatusChangeRoutingKey)
+        .to(ecommerceEventExchange)
+        .with(PaymentRoutingConstants.EVENT_PAYMENT_STATUS_CHANGE_ROUTING_KEY)
         .noargs();
   }
 }

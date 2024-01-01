@@ -1,17 +1,23 @@
 package br.com.jlcorradi.service;
 
+import br.com.jlcorradi.OrderEventPublisher;
+import br.com.jlcorradi.commons.exception.EcommerceExcepion;
+import br.com.jlcorradi.commons.exception.EntityNotFoundException;
 import br.com.jlcorradi.dao.OrderRepository;
 import br.com.jlcorradi.model.Order;
 import br.com.jlcorradi.orders.OrderStatus;
 import br.com.jlcorradi.orders.dto.CreateOrderRequest;
 import br.com.jlcorradi.orders.dto.OrderDto;
 import br.com.jlcorradi.payment.PaymentMode;
+import br.com.jlcorradi.payment.PaymentStatusChangeListener;
 import br.com.jlcorradi.payment.client.PaymentClient;
 import br.com.jlcorradi.payment.dto.CreatePaymentTransactionRequest;
+import br.com.jlcorradi.payment.dto.PaymentStatusChangeEvent;
 import br.com.jlcorradi.payment.dto.PaymentTransactionDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -21,12 +27,12 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class PrimaryOrderService implements OrderService
+public class PrimaryOrderService implements OrderService, PaymentStatusChangeListener
 {
-
   private final OrderRepository orderRepository;
   private final ModelMapper mapper;
   private final PaymentClient paymentClient;
+  private final OrderEventPublisher orderEventPublisher;
 
   @Override
   public OrderDto placeOrder(CreateOrderRequest order, UUID userId)
@@ -35,9 +41,11 @@ public class PrimaryOrderService implements OrderService
     try {
       PaymentTransactionDto paymentTransactionDto = paymentClient.makePayment(resolvePaymentTransactionRequest(newOrder));
       newOrder = updatePaymentInfo(newOrder, paymentTransactionDto.getTransactionCode());
+      orderEventPublisher.publishOrderStatusChange(newOrder);
     } catch (Exception e) {
       newOrder.setStatus(OrderStatus.AWAITING_PAYMENT);
       newOrder = orderRepository.save(newOrder);
+      orderEventPublisher.publishOrderStatusChange(newOrder);
     }
     return mapper.map(newOrder, OrderDto.class);
   }
@@ -80,5 +88,23 @@ public class PrimaryOrderService implements OrderService
     return orderRepository.findAllByCustomerIdAndStatusNot(uuid, OrderStatus.COMPLETE).stream()
         .map(order -> mapper.map(order, OrderDto.class))
         .toList();
+  }
+
+  @Override
+  @RabbitListener(queues = "#{orderPaymentReceivedQueue.name}")
+  public void onPaymentStatusChange(PaymentStatusChangeEvent event)
+  {
+    Order order = orderRepository.findByPaymentTransactionId(event.getPaymentTransactionId())
+        .orElseThrow(() -> new EntityNotFoundException(String.format(
+            "No order was found for payment transaction id %s",
+            event.getPaymentTransactionId()))
+        );
+    switch (event.getStatus()) {
+      case ACCEPTED -> order.setStatus(OrderStatus.AWAITING_INVOICE);
+      case REJECTED -> order.setStatus(OrderStatus.AWAITING_PAYMENT);
+      case REFUNDED -> order.setStatus(OrderStatus.CANCELED);
+      default -> throw new EcommerceExcepion("Illegal state change", null);
+    }
+    orderEventPublisher.publishOrderStatusChange(order);
   }
 }

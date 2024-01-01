@@ -1,9 +1,8 @@
 server:
-  port: 8084
+  port: 8086
 
 authService:
-  jwtTokenSecret: ${JWT_TOKEN_SECRET}
-
+  jwtTokenSecret: RW50ZXIgdGhlIG1hdHJpeC4gSXQncyBhIGZhY2VzaXRpbmcgd29ybGQgb3V0IHRoZXIh
 
 management:
   observations:
@@ -20,19 +19,12 @@ management:
 
 spring:
   application:
-    name: Payment Service
-  datasource:
-    url: ${JDBC_URL}
-    username: ${JDBC_USERNAME}
-    password: ${JDBC_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
+    name: InvoiceServiceApplication
   rabbitmq:
     addresses: localhost:5672
     username: rabbit
     password: rabbit
+
 
 eventArchitecture:
   ecommerceEventExchange: ecommerce_event_topic

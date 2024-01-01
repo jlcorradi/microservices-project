@@ -7,7 +7,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import static br.com.jlcorradi.payment.PaymentRoutingConstants.PAYMENT_STATUS_CHANGE_ROUTING_KEY;
+import static br.com.jlcorradi.payment.PaymentRoutingConstants.EVENT_PAYMENT_STATUS_CHANGE_ROUTING_KEY;
 
 @Slf4j
 @Component
@@ -18,7 +18,7 @@ public class RabbitMQPaymentEventPublisher implements PaymentEventPublisher
 
   public RabbitMQPaymentEventPublisher(
       RabbitTemplate rabbitTemplate,
-      @Value("${eventArchitecture.exchange-event-name:ecommerce.event}") String ecommerceExchangeTopicName)
+      @Value("#{ecommerceEventExchange.name}") String ecommerceExchangeTopicName)
   {
     this.rabbitTemplate = rabbitTemplate;
     this.ecommerceExchangeTopicName = ecommerceExchangeTopicName;
@@ -33,6 +33,6 @@ public class RabbitMQPaymentEventPublisher implements PaymentEventPublisher
         .transactionCode(paymentTransaction.getTransactionCode())
         .build();
     log.info("Notifying of Payment Status Change: {}", payload);
-    rabbitTemplate.convertAndSend(ecommerceExchangeTopicName, PAYMENT_STATUS_CHANGE_ROUTING_KEY, payload);
+    rabbitTemplate.convertAndSend(ecommerceExchangeTopicName, EVENT_PAYMENT_STATUS_CHANGE_ROUTING_KEY, payload);
   }
 }

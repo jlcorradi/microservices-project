@@ -1,0 +1,23 @@
+{
+  "properties": [
+    {
+      "name": "client-services-urls.inventory-service",
+      "type": "java.lang.String",
+      "description": "Description for client-services-urls.inventory-service."
+    },
+    {
+      "name": "client-services-urls.invoice-service",
+      "type": "java.lang.String",
+      "description": "Description for client-services-urls.invoice-service."
+    },
+    {
+      "name": "client-services-urls.catalog-service",
+      "type": "java.lang.String",
+      "description": "Description for client-services-urls.catalog-service."
+    },
+    {
+      "name": "client-services-urls.notification-service",
+      "type": "java.lang.String",
+      "description": "Description for client-services-urls.notification-service."
+    }
+  ] }

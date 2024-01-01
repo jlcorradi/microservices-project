@@ -7,6 +7,5 @@ import lombok.NoArgsConstructor;
 public class PaymentRoutingConstants
 {
   public static final String PAYMENTS_API_URL = "/api/v1/payments";
-  public static final String PAYMENT_STATUS_CHANGE_ROUTING_KEY = "payment.onPaymentStatusChange";
-
+  public static final String EVENT_PAYMENT_STATUS_CHANGE_ROUTING_KEY = "event.payment.onStatusChange";
 }

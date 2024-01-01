@@ -19,9 +19,10 @@ public class MessagingConfiguration
   }
 
   @Bean
-  public Exchange ecommerceEventTopic(@Value("${eventArchitecture.exchange-event-name:ecommerce.event}") String ecommerceExchangeTopicName)
+  public Exchange ecommerceEventExchange(
+      @Value("${eventArchitecture.ecommerceEventExchange}") String ecommerceEventTopicName)
   {
-    return new TopicExchange(ecommerceExchangeTopicName);
+    return new TopicExchange(ecommerceEventTopicName);
   }
 }
 

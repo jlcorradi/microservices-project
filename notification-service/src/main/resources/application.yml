@@ -37,7 +37,6 @@ spring:
 
 
 eventArchitecture:
-  exchange-event-name: ecommerce.event
-  payment-status-change-routing-key: payment.onPaymentStatusChange
-  payment-status-change-notification-queue: notification.onPaymentStatusChange
+  ecommerceEventExchange: ecommerce_event_topic
+  notificationOnPaymentStatusChangeQueue: notification_on_payment_status_change
 
