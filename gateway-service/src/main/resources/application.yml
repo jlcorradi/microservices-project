@@ -5,9 +5,7 @@ client-services-urls:
   orders-service: http://localhost:8080
   auth-service: http://localhost:8081
   payment-service: http://localhost:8084
-  inventory-service: http://localhost:8083
   invoice-service: http://localhost:8086
-  catalog-service: http://localhost:8082
   notification-service: http://localhost:8081
 
 management:
