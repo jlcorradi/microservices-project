@@ -92,7 +92,7 @@ public class PrimaryOrderService implements OrderService, PaymentStatusChangeLis
   }
 
   @Override
-  public OrderDto getOrder(UUID orderId)
+  public Optional<OrderDto> getOrder(UUID orderId)
   {
     return Optional.ofNullable(orderRepository.findById(orderId)
         .map(order -> mapper.map(Order.class, OrderDto.class))

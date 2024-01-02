@@ -4,6 +4,7 @@ import br.com.jlcorradi.orders.dto.CreateOrderRequest;
 import br.com.jlcorradi.orders.dto.OrderDto;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface OrderService
@@ -12,5 +13,5 @@ public interface OrderService
 
   List<OrderDto> listPendingOrders(UUID uuid);
 
-  OrderDto getOrder(UUID orderId);
+  Optional<OrderDto> getOrder(UUID orderId);
 }
