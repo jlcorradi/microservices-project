@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 public class ElectronicInvoiceService implements OrderStatusChangeEventListener
 {
   @Override
-  @RabbitListener(queues = "#{inventoryOnOrderStatusChangeQueue.name}")
+  @RabbitListener(queues = "#{invoiceOnOrderStatusChangeQueue.name}")
   public void onOrderStatusChange(OrderStatusChangeEvent event)
   {
-    log.info("Order Status change event received. #Order: {}, status: {}", event.getOrderId(), event.getNewStatus());
+    log.info("Handling OrderStatusChangeEvent. #Order: {}, status: {}", event.getOrderId(), event.getNewStatus());
   }
 }

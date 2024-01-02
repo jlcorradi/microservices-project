@@ -4,7 +4,7 @@ server:
 ## This is important if you'll use FeignClient
 client-services-urls:
   gateway-service: ${GATEWAY_SERVICE_URL}
-
+  order-service: http://localhost:8080
 
 authService:
   jwtTokenSecret: ${JWT_TOKEN_SECRET}
@@ -38,5 +38,6 @@ spring:
 
 eventArchitecture:
   ecommerceEventExchange: ecommerce_event_topic
-  notificationOnPaymentStatusChangeQueue: notification_on_payment_status_change
+  notificationOnPaymentStatusChangeQueue: notification_on_payment_status_change_queue
+  notificationOnOrderStatusChangeQueue: notification_on_order_status_change_queue
 

@@ -4,5 +4,15 @@
       "name": "client-services-urls.gateway-service",
       "type": "java.lang.String",
       "description": "Description for client-services-urls.gateway-service."
-  }
-] }
+    },
+    {
+      "name": "client-services-urls.order-service",
+      "type": "java.lang.String",
+      "description": "Description for client-services-urls.orders-service."
+    },
+    {
+      "name": "eventArchitecture.notificationOnOrderStatusChangeQueue",
+      "type": "java.lang.String",
+      "description": "Description for eventArchitecture.notificationOnOrderStatusChangeQueue."
+    }
+  ] }

@@ -1,6 +1,7 @@
 package br.com.jlcorradi.api;
 
 import br.com.jlcorradi.commons.auth.BasicJwtAuthenticationToken;
+import br.com.jlcorradi.orders.client.OrdersClient;
 import br.com.jlcorradi.orders.dto.CreateOrderRequest;
 import br.com.jlcorradi.orders.dto.OrderDto;
 import br.com.jlcorradi.service.OrderService;
@@ -20,7 +21,7 @@ import static br.com.jlcorradi.orders.OrdersRoutingConstants.ORDERS_API_V1_URL;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(ORDERS_API_V1_URL)
-public class OrdersApi
+public class OrdersApi implements OrdersClient
 {
 
   private final OrderService orderService;
@@ -42,4 +43,10 @@ public class OrdersApi
     return ResponseEntity.ok(orders);
   }
 
+  @Override
+  public ResponseEntity<OrderDto> getOrder(UUID orderId)
+  {
+    OrderDto order = orderService.getOrder(orderId);
+    return ResponseEntity.ok(order);
+  }
 }

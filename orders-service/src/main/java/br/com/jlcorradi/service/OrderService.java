@@ -11,4 +11,6 @@ public interface OrderService
   OrderDto placeOrder(CreateOrderRequest order, UUID userId);
 
   List<OrderDto> listPendingOrders(UUID uuid);
+
+  OrderDto getOrder(UUID orderId);
 }

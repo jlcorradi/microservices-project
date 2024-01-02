@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -91,20 +92,29 @@ public class PrimaryOrderService implements OrderService, PaymentStatusChangeLis
   }
 
   @Override
+  public OrderDto getOrder(UUID orderId)
+  {
+    return Optional.ofNullable(orderRepository.findById(orderId)
+        .map(order -> mapper.map(Order.class, OrderDto.class))
+        .orElseThrow(EntityNotFoundException::new));
+  }
+
+  @Override
   @RabbitListener(queues = "#{orderPaymentReceivedQueue.name}")
   public void onPaymentStatusChange(PaymentStatusChangeEvent event)
   {
-    Order order = orderRepository.findByPaymentTransactionId(event.getPaymentTransactionId())
-        .orElseThrow(() -> new EntityNotFoundException(String.format(
-            "No order was found for payment transaction id %s",
-            event.getPaymentTransactionId()))
-        );
-    switch (event.getStatus()) {
-      case ACCEPTED -> order.setStatus(OrderStatus.AWAITING_INVOICE);
-      case REJECTED -> order.setStatus(OrderStatus.AWAITING_PAYMENT);
-      case REFUNDED -> order.setStatus(OrderStatus.CANCELED);
-      default -> throw new EcommerceExcepion("Illegal state change", null);
-    }
-    orderEventPublisher.publishOrderStatusChange(order);
+    log.info("Handling onPaymentStatusChange. Payment Transaction Id: {}, status:{}",
+        event.getPaymentTransactionId(), event.getStatus());
+
+    orderRepository.findByPaymentTransactionId(event.getPaymentTransactionId()).ifPresent(order ->
+    {
+      switch (event.getStatus()) {
+        case ACCEPTED -> order.setStatus(OrderStatus.AWAITING_INVOICE);
+        case REJECTED -> order.setStatus(OrderStatus.AWAITING_PAYMENT);
+        case REFUNDED -> order.setStatus(OrderStatus.CANCELED);
+        default -> throw new EcommerceExcepion("Illegal state change", null);
+      }
+      orderEventPublisher.publishOrderStatusChange(order);
+    });
   }
 }

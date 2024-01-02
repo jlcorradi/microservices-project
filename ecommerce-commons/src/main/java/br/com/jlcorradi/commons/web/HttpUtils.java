@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -44,10 +43,9 @@ public class HttpUtils
    */
   public static Optional<HttpServletResponse> getHttpServletResponse()
   {
-    HttpServletResponse response =
-        ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes()))
-            .getResponse();
-    return Optional.of(response);
+    return Optional.ofNullable(RequestContextHolder.getRequestAttributes())
+        .map(ServletRequestAttributes.class::cast)
+        .map(ServletRequestAttributes::getResponse);
   }
 
   /**
@@ -58,10 +56,9 @@ public class HttpUtils
    */
   public static Optional<HttpServletRequest> getHttpServletRequest()
   {
-    HttpServletRequest request =
-        ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes()))
-            .getRequest();
-    return Optional.of(request);
+    return Optional.ofNullable(RequestContextHolder.getRequestAttributes())
+        .map(ServletRequestAttributes.class::cast)
+        .map(ServletRequestAttributes::getRequest);
   }
 
   /**

@@ -238,16 +238,51 @@ public SecurityFilterChain config(HttpSecurity http) throws Exception
 }
 ```
 
+## Asynchronous communication (Event driven)
+
+The commons library loads the required beans for event publishing.
+```Exchange ecommerceEventExchange```: Should be used to publish events. I should also be used to bind Queues.
+Also a ```Jackson2JsonMessageConverter``` is loaded so that the messages flow as JSON.
+
+### Standards
+- The service that listens on queues must declare them and their bindings.
+```java
+@Configuration
+class MessagingConfig
+{
+  private final Exchange ecommerceEventExchange;
+  @Bean
+  public Queue invoiceOnOrderStatusChangeQueue()
+  {
+    return new Queue("invoice_on_order_status_change_queue");
+  }
+  @Bean
+  public Binding invoiceOnOrderStatusChangeQueueBinding(
+      Queue invoiceOnOrderStatusChangeQueueBinding
+  )
+  {
+    return BindingBuilder.bind(invoiceOnOrderStatusChangeQueueBinding)
+        .to(ecommerceEventExchange)
+        .with(OrdersRoutingConstants.EVENT_ORDER_STATUS_CHANGE_ROUTING_KEY)
+        .noargs();
+  }
+}
+
+```
+
 ## Conventions - Constants
 
 The constants that represents routes in the microservices must be defined as constants in a class
-named ```{Service}RoutingConstants``` in the ecommerce-commons project. That way the same value will be used in the 
+named ```{Service}RoutingConstants``` in the ecommerce-commons project. That way the same value will be used in the
 Feign Clients and Api Controllers across the ecosystem. What should be declared:
+
 - Api URLS
 - Rabbit MQ Routing Keys.
 
 Ex:
+
 ```java
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PaymentRoutingConstants
 {

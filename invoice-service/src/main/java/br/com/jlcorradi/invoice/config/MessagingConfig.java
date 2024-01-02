@@ -16,17 +16,17 @@ class MessagingConfig
   private final Exchange ecommerceEventExchange;
 
   @Bean
-  public Queue inventoryOnOrderStatusChangeQueue()
+  public Queue invoiceOnOrderStatusChangeQueue()
   {
     return new Queue("invoice_on_order_status_change_queue");
   }
 
   @Bean
-  public Binding inventoryOnOrderStatusChangeQueueBinding(
-      Queue inventoryOnOrderStatusChangeQueueBinding
+  public Binding invoiceOnOrderStatusChangeQueueBinding(
+      Queue invoiceOnOrderStatusChangeQueueBinding
   )
   {
-    return BindingBuilder.bind(inventoryOnOrderStatusChangeQueueBinding)
+    return BindingBuilder.bind(invoiceOnOrderStatusChangeQueueBinding)
         .to(ecommerceEventExchange)
         .with(OrdersRoutingConstants.EVENT_ORDER_STATUS_CHANGE_ROUTING_KEY)
         .noargs();
