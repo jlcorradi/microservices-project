@@ -299,7 +299,5 @@ The services are set up to run on the following ports:
 - OrdersServiceApplication :8080/
 - GatewayServiceApplication :8090/
 - NotificationServiceApplication :8085/
-- CatalogServiceApplication :8082/
 - PaymentServiceApplication :8084/
-- InventoryServiceApplication :8083/
 - AuthServiceApplication :8081/
