@@ -11,15 +11,13 @@
     <description>Demo project Microservices architecture</description>
     <modules>
         <module>ecommerce-commons</module>
+        <module>ecommerce-commons-test</module>
         <module>gateway-service</module>
         <module>payment-service</module>
         <module>notification-service</module>
-        <module>catalog-service</module>
-        <module>inventory-service</module>
         <module>invoice-service</module>
         <module>auth-service</module>
         <module>orders-service</module>
-        <module>ecommerce-commons-test</module>
     </modules>
 
     <properties>
