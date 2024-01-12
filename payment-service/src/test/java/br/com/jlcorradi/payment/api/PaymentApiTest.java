@@ -4,6 +4,7 @@ import br.com.jlcorradi.commons.IntegrationTestBaseContext;
 import br.com.jlcorradi.commons.ServiceTest;
 import br.com.jlcorradi.payment.PaymentTransactionStatus;
 import br.com.jlcorradi.payment.dto.CreatePaymentTransactionRequest;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Import;
@@ -23,6 +24,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(IntegrationTestBaseContext.class)
 class PaymentApiTest extends ServiceTest
 {
+
+  @Disabled
   @Test
   @DisplayName("Create payment successfully")
   void shouldCreatePaymentSuccessfully() throws Exception

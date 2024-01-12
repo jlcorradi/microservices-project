@@ -1,6 +1,7 @@
 package br.com.jlcorradi.api;
 
 import br.com.jlcorradi.commons.auth.BasicJwtAuthenticationToken;
+import br.com.jlcorradi.commons.exception.EntityNotFoundException;
 import br.com.jlcorradi.orders.client.OrdersClient;
 import br.com.jlcorradi.orders.dto.CreateOrderRequest;
 import br.com.jlcorradi.orders.dto.OrderDto;
@@ -21,32 +22,29 @@ import static br.com.jlcorradi.orders.OrdersRoutingConstants.ORDERS_API_V1_URL;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(ORDERS_API_V1_URL)
-public class OrdersApi implements OrdersClient
-{
+public class OrdersApi implements OrdersClient {
 
-  private final OrderService orderService;
+    private final OrderService orderService;
 
-  @PostMapping
-  public ResponseEntity<OrderDto> createOrder(
-      @RequestBody @Validated CreateOrderRequest request,
-      BasicJwtAuthenticationToken principal)
-  {
-    OrderDto order = orderService.placeOrder(request, UUID.fromString(principal.getUserId()));
-    log.info("Order created: {}", order);
-    return ResponseEntity.status(HttpStatus.CREATED).body(order);
-  }
+    @PostMapping
+    public ResponseEntity<OrderDto> createOrder(
+            @RequestBody @Validated CreateOrderRequest request,
+            BasicJwtAuthenticationToken principal) {
+        OrderDto order = orderService.placeOrder(request, UUID.fromString(principal.getUserId()));
+        log.info("Order created: {}", order);
+        return ResponseEntity.status(HttpStatus.CREATED).body(order);
+    }
 
-  @GetMapping
-  public ResponseEntity<List<OrderDto>> listPendingOrders(BasicJwtAuthenticationToken principal)
-  {
-    List<OrderDto> orders = orderService.listPendingOrders(UUID.fromString(principal.getUserId()));
-    return ResponseEntity.ok(orders);
-  }
+    @GetMapping
+    public ResponseEntity<List<OrderDto>> listPendingOrders(BasicJwtAuthenticationToken principal) {
+        List<OrderDto> orders = orderService.listPendingOrders(UUID.fromString(principal.getUserId()));
+        return ResponseEntity.ok(orders);
+    }
 
-  @Override
-  public ResponseEntity<OrderDto> getOrder(UUID orderId)
-  {
-    OrderDto order = orderService.getOrder(orderId);
-    return ResponseEntity.ok(order);
-  }
+    @Override
+    public ResponseEntity<OrderDto> getOrder(UUID orderId) {
+        OrderDto order = orderService.getOrder(orderId)
+                .orElseThrow(EntityNotFoundException::new);
+        return ResponseEntity.ok(order);
+    }
 }

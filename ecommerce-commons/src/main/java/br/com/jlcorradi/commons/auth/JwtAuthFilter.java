@@ -28,16 +28,18 @@ public class JwtAuthFilter extends OncePerRequestFilter
 
   @Override
   protected void doFilterInternal(HttpServletRequest request,
-                                  HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException
+                                  HttpServletResponse response,
+                                  FilterChain filterChain) throws ServletException, IOException
   {
     // Check
     String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-    if (null == authorizationHeader) {
+    if (null == authorizationHeader)
+    {
       filterChain.doFilter(request, response);
       return;
     }
 
-    BasicJwtAuthenticationToken authRequest = Optional.ofNullable(authorizationHeader)
+    BasicJwtAuthenticationToken authRequest = Optional.of(authorizationHeader)
         .map(authHeader -> authHeader.substring(Constants.BEARER_HEADER.length()))
         .map(BasicJwtAuthenticationToken::unauthenticated)
         .orElseThrow(UnauthorizedTokenException::new);
