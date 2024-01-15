@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -15,6 +14,10 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
+import java.util.stream.Stream;
+
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Component
 public class AuthFilterGatewayFilterFactory extends AbstractGatewayFilterFactory<Object>
@@ -45,8 +48,9 @@ public class AuthFilterGatewayFilterFactory extends AbstractGatewayFilterFactory
 
       ServerHttpResponse response = exchange.getResponse();
 
-      if (!StringUtils.hasText(authHeader)) {
-        response.setStatusCode(HttpStatus.UNAUTHORIZED);
+      if (!StringUtils.hasText(authHeader))
+      {
+        response.setStatusCode(UNAUTHORIZED);
         return response.setComplete();
       }
 
@@ -55,8 +59,8 @@ public class AuthFilterGatewayFilterFactory extends AbstractGatewayFilterFactory
           .uri(String.format("%s/api/v1/auth?accessToken=%s&uri=%s",
               usersServiceBaseUrl, authHeader, exchange.getRequest().getURI()))
           .retrieve()
-          .onStatus(HttpStatusCode::is4xxClientError, clientResponse ->
-              Mono.error(new ResponseStatusException(HttpStatus.UNAUTHORIZED)))
+          .onStatus(this::isAuthenticationError, clientResponse ->
+              Mono.error(new ResponseStatusException(UNAUTHORIZED)))
           .bodyToMono(UserDto.class)
           .flatMap(userDto ->
           {
@@ -67,6 +71,12 @@ public class AuthFilterGatewayFilterFactory extends AbstractGatewayFilterFactory
             return chain.filter(exchange);
           });
     };
+  }
+
+  private boolean isAuthenticationError(HttpStatusCode httpStatusCode)
+  {
+    return Stream.of(UNAUTHORIZED, FORBIDDEN)
+        .anyMatch(httpStatusCode::isSameCodeAs);
   }
 
   record UserDto(Long userId, String commaSeparatedAuthorities)

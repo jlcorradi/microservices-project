@@ -16,11 +16,6 @@ import java.util.UUID;
 
 import static br.com.jlcorradi.payment.PaymentRoutingConstants.PAYMENTS_API_URL;
 
-/**
- * This class represents a RESTful API for handling payment transactions.
- * <p>
- * The PaymentApi class provides methods for creating payment transactions.
- */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(PAYMENTS_API_URL)

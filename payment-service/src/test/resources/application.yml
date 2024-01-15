@@ -19,3 +19,6 @@ logging:
     org.springframework.security.web: INFO
 
 debug: false
+
+eventArchitecture:
+  ecommerceEventExchange: ecommerce_event_topic

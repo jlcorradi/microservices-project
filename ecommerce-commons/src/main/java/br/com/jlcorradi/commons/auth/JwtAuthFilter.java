@@ -1,6 +1,7 @@
 package br.com.jlcorradi.commons.auth;
 
 import br.com.jlcorradi.commons.exception.UnauthorizedTokenException;
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,8 +29,8 @@ public class JwtAuthFilter extends OncePerRequestFilter
 
   @Override
   protected void doFilterInternal(HttpServletRequest request,
-                                  HttpServletResponse response,
-                                  FilterChain filterChain) throws ServletException, IOException
+                                  @Nonnull HttpServletResponse response,
+                                  @Nonnull FilterChain filterChain) throws ServletException, IOException
   {
     // Check
     String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);

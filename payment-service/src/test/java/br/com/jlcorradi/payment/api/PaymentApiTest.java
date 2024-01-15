@@ -4,18 +4,25 @@ import br.com.jlcorradi.commons.IntegrationTestBaseContext;
 import br.com.jlcorradi.commons.ServiceTest;
 import br.com.jlcorradi.payment.PaymentTransactionStatus;
 import br.com.jlcorradi.payment.dto.CreatePaymentTransactionRequest;
-import org.junit.jupiter.api.Disabled;
+import br.com.jlcorradi.payment.dto.PaymentStatusChangeEvent;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.UUID;
 
 import static br.com.jlcorradi.commons.utilities.TestUtils.toJson;
 import static br.com.jlcorradi.payment.DummyObjectGenerator.paymentTransactionRequest;
+import static br.com.jlcorradi.payment.PaymentRoutingConstants.EVENT_PAYMENT_STATUS_CHANGE_ROUTING_KEY;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.verify;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -25,7 +32,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PaymentApiTest extends ServiceTest
 {
 
-  @Disabled
+  @MockBean
+  RabbitTemplate rabbitTemplate;
+
+  @Captor
+  private ArgumentCaptor<String> exchangeCaptor;
+
+  @Captor
+  private ArgumentCaptor<String> routingKeyCaptor;
+
+  @Captor
+  private ArgumentCaptor<PaymentStatusChangeEvent> messageCaptor;
+
   @Test
   @DisplayName("Create payment successfully")
   void shouldCreatePaymentSuccessfully() throws Exception
@@ -46,5 +64,11 @@ class PaymentApiTest extends ServiceTest
         .andExpect(jsonPath("$.amount").value("1988.23"))
         .andExpect(jsonPath("$.status").value(PaymentTransactionStatus.ACCEPTED.toString()));
 
+    verify(rabbitTemplate).convertAndSend(exchangeCaptor.capture(), routingKeyCaptor.capture(), messageCaptor.capture());
+    assertEquals(EVENT_PAYMENT_STATUS_CHANGE_ROUTING_KEY, routingKeyCaptor.getValue());
+    PaymentStatusChangeEvent message = messageCaptor.getValue();
+    assertNotNull(message.getPaymentTransactionId());
+    assertEquals(PaymentTransactionStatus.ACCEPTED, message.getStatus());
+    assertNotNull(message.getTransactionCode());
   }
 }
