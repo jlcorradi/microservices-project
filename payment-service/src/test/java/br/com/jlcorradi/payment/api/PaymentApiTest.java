@@ -5,6 +5,8 @@ import br.com.jlcorradi.commons.ServiceTest;
 import br.com.jlcorradi.payment.PaymentTransactionStatus;
 import br.com.jlcorradi.payment.dto.CreatePaymentTransactionRequest;
 import br.com.jlcorradi.payment.dto.PaymentStatusChangeEvent;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -28,6 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Slf4j
 @Import(IntegrationTestBaseContext.class)
 class PaymentApiTest extends ServiceTest
 {
@@ -43,6 +46,13 @@ class PaymentApiTest extends ServiceTest
 
   @Captor
   private ArgumentCaptor<PaymentStatusChangeEvent> messageCaptor;
+
+  @Override
+  @BeforeEach
+  protected void setup() {
+    withRoles("ROLE_user");
+    log.info("Setting up stuff in the subclass. Testing if superclass functionality will be preserved.");
+  }
 
   @Test
   @DisplayName("Create payment successfully")

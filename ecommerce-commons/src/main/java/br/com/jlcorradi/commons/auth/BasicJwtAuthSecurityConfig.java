@@ -31,6 +31,7 @@ public class BasicJwtAuthSecurityConfig
         .authorizeHttpRequests(authorize ->
         {
           authorize.requestMatchers("/actuator", "/actuator/**").permitAll();
+          authorize.requestMatchers("/api/**").hasAnyRole("user", "admin", "root");
           authorize.anyRequest().authenticated();
         })
         .exceptionHandling(ex -> ex
