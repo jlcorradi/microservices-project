@@ -15,21 +15,18 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class RabbitMQPaymentStatusChangeListener implements PaymentStatusChangeListener, OrderStatusChangeEventListener
-{
+public class RabbitMQPaymentStatusChangeListener implements PaymentStatusChangeListener, OrderStatusChangeEventListener {
   private final OrdersClient ordersClient;
 
   @Override
   @RabbitListener(queues = "#{onPaymentStatusChangeQueue.name}")
-  public void onPaymentStatusChange(PaymentStatusChangeEvent event)
-  {
+  public void onPaymentStatusChange(PaymentStatusChangeEvent event) {
     log.info("Handling onPaymentStatusChange {}", event);
   }
 
   @Override
   @RabbitListener(queues = "#{onOrderStatusChangeQueue.name}")
-  public void onOrderStatusChange(OrderStatusChangeEvent event)
-  {
+  public void onOrderStatusChange(OrderStatusChangeEvent event) {
     log.info("Handling onOrderStatusChange {}", event);
     ResponseEntity<OrderDto> response = ordersClient.getOrder(event.getOrderId());
     log.info("Order: {}", response);

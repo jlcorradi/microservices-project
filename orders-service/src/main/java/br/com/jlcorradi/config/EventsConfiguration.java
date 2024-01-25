@@ -14,20 +14,17 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
-class EventsConfiguration
-{
+class EventsConfiguration {
   private final Exchange ecommerceEventExchange;
 
   @Bean
-  public Queue orderPaymentReceivedQueue()
-  {
+  public Queue orderPaymentReceivedQueue() {
     return new Queue("order_on_payment_status_change_queue");
   }
 
   @Bean
   public Binding orderPaymentReceivedQueueBinding(
-      @Value("#{orderPaymentReceivedQueue}") Queue orderPaymentReceivedQueue)
-  {
+      @Value("#{orderPaymentReceivedQueue}") Queue orderPaymentReceivedQueue) {
     return BindingBuilder.bind(orderPaymentReceivedQueue)
         .to(ecommerceEventExchange)
         .with(PaymentRoutingConstants.EVENT_PAYMENT_STATUS_CHANGE_ROUTING_KEY)

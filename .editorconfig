@@ -17,7 +17,7 @@ indent_size = 2
 ij_gherkin_keep_indents_on_empty_lines = false
 
 [*.java]
-ij_java_block_brace_style = next_line
-ij_java_class_brace_style = next_line
-ij_java_lambda_brace_style = next_line
-ij_java_method_brace_style = next_line
+# ij_java_block_brace_style = next_line
+# ij_java_class_brace_style = next_line
+# ij_java_lambda_brace_style = next_line
+# ij_java_method_brace_style = next_line

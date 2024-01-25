@@ -17,25 +17,21 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Optional;
 
-public class JwtAuthFilter extends OncePerRequestFilter
-{
+public class JwtAuthFilter extends OncePerRequestFilter {
 
   private final AuthenticationManager authenticationManager;
 
-  public JwtAuthFilter(AuthenticationManager authenticationManager)
-  {
+  public JwtAuthFilter(AuthenticationManager authenticationManager) {
     this.authenticationManager = authenticationManager;
   }
 
   @Override
   protected void doFilterInternal(HttpServletRequest request,
                                   @Nonnull HttpServletResponse response,
-                                  @Nonnull FilterChain filterChain) throws ServletException, IOException
-  {
+                                  @Nonnull FilterChain filterChain) throws ServletException, IOException {
     // Check
     String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-    if (null == authorizationHeader)
-    {
+    if (null == authorizationHeader) {
       filterChain.doFilter(request, response);
       return;
     }

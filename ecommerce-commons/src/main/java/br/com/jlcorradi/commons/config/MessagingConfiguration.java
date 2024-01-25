@@ -10,27 +10,22 @@ import org.springframework.util.StringUtils;
 
 @Configuration
 @Conditional(MessagingConfigurationRabbitSet.class)
-public class MessagingConfiguration
-{
+public class MessagingConfiguration {
   @Bean
-  Jackson2JsonMessageConverter messageConverter()
-  {
+  Jackson2JsonMessageConverter messageConverter() {
     return new Jackson2JsonMessageConverter();
   }
 
   @Bean
   public Exchange ecommerceEventExchange(
-      @Value("${eventArchitecture.ecommerceEventExchange}") String ecommerceEventTopicName)
-  {
+      @Value("${eventArchitecture.ecommerceEventExchange}") String ecommerceEventTopicName) {
     return new TopicExchange(ecommerceEventTopicName);
   }
 }
 
-class MessagingConfigurationRabbitSet implements Condition
-{
+class MessagingConfigurationRabbitSet implements Condition {
   @Override
-  public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata)
-  {
+  public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
     return StringUtils.hasText(context.getEnvironment().getProperty(("spring.rabbitmq.addresses")));
   }
 }

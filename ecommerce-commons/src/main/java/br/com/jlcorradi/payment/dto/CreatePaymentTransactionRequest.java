@@ -14,8 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Data
 @Builder
-public class CreatePaymentTransactionRequest
-{
+public class CreatePaymentTransactionRequest {
   @NotNull
   private UUID orderId;
   @NotNull
@@ -29,8 +28,7 @@ public class CreatePaymentTransactionRequest
   @NoArgsConstructor
   @AllArgsConstructor
   @Data
-  public static class PaymentInfo
-  {
+  public static class PaymentInfo {
     @NotNull
     private String ccNumber;
     @NotNull

@@ -5,11 +5,11 @@ Project to demonstrate concepts and practices in a microservice architecture.
 <!-- TOC -->
 
 * [Microservices Project](#microservices-project)
-    * [Intended Structure](#intended-structure)
-    * [Common classes and DTOs](#common-classes-and-dtos)
-    * [Creating a new Service](#creating-a-new-service)
-    * [Decent Defaults](#decent-defaults)
-    * [Authentication](#authentication)
+  * [Intended Structure](#intended-structure)
+  * [Common classes and DTOs](#common-classes-and-dtos)
+  * [Creating a new Service](#creating-a-new-service)
+  * [Decent Defaults](#decent-defaults)
+  * [Authentication](#authentication)
 
 <!-- TOC -->
 
@@ -187,7 +187,7 @@ Once you annotate your application with ```@WithCommons``` you bring in common f
 - A JwtValidator object that can be autowired to validate JWTs. You can use it in case you need to customize the
   Spring security with a bean of type SecurityFilterChain (Refer to Spring Security 6 documentation)
 - Support for Feign Clients.
-    - You should define feign client interfaces within the commons project under the owner service folder.
+  - You should define feign client interfaces within the commons project under the owner service folder.
 
 The commons project also provides static JwtAuhentication that verifies the signature of the token and creates an
 Authenticated user (BasicJwtAuthenticationToken) in the SecurityContextHolder with the username, id and authorities
@@ -245,7 +245,9 @@ The commons library loads the required beans for event publishing.
 Also a ```Jackson2JsonMessageConverter``` is loaded so that the messages flow as JSON.
 
 ### Standards
+
 - The service that listens on queues must declare them and their bindings.
+
 ```java
 @Configuration
 class MessagingConfig

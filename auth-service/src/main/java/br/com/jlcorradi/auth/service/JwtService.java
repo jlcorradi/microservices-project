@@ -22,8 +22,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class JwtService
-{
+public class JwtService {
 
   private final ActiveTokenRepository repository;
   private final int tokenDurationInMilliseconds;
@@ -38,8 +37,7 @@ public class JwtService
       @Value("${authService.jwtTokenSecret}") String jwtTokenSecret,
       EcommerceUserRepository userRepository,
       ModelMapper mapper,
-      JwtValidator jwtValidator)
-  {
+      JwtValidator jwtValidator) {
     this.repository = repository;
     this.tokenDurationInMilliseconds = tokenDurationInMilliseconds;
     this.jwtTokenSecret = jwtTokenSecret;
@@ -49,8 +47,7 @@ public class JwtService
   }
 
   @Transactional
-  public String retrieveOrCreateTokenForUser(EcommerceUser user)
-  {
+  public String retrieveOrCreateTokenForUser(EcommerceUser user) {
     return repository.findActiveTokenByUser(user)
         .stream()
         .filter(activeToken -> activeToken.getExpirationDate().after(new Date(System.currentTimeMillis())))
@@ -59,8 +56,7 @@ public class JwtService
         .orElseGet(() -> createNewToken(user));
   }
 
-  private String createNewToken(EcommerceUser user)
-  {
+  private String createNewToken(EcommerceUser user) {
     repository.markOtherTokensAsInactive(user);
 
     Date expiration = new Date(System.currentTimeMillis() + tokenDurationInMilliseconds);
@@ -78,8 +74,7 @@ public class JwtService
     return activeToken.getToken();
   }
 
-  public EcommerceUserDto validateToken(String accessToken)
-  {
+  public EcommerceUserDto validateToken(String accessToken) {
     Claims claims = jwtValidator.validateJwtToken(accessToken);
     return userRepository.findByUsername(claims.getSubject())
         .map(user -> repository.findActiveTokenByUserAndToken(user, accessToken))

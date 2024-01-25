@@ -14,15 +14,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class PaymentTransactionMapper implements EntityDtoMapper<PaymentTransaction, PaymentTransactionDto>
-{
+public class PaymentTransactionMapper implements EntityDtoMapper<PaymentTransaction, PaymentTransactionDto> {
   @Getter
   private final ModelMapper mapper;
 
   @PostConstruct
   @Override
-  public void configureMappings()
-  {
+  public void configureMappings() {
     log.info("Configuring mapper for payment transaction");
     mapper.createTypeMap(PaymentTransaction.class, PaymentTransactionDto.class)
         .setPostConverter(MappingContext::getDestination);

@@ -4,7 +4,6 @@ import br.com.jlcorradi.payment.model.PaymentTransaction;
 
 import java.util.UUID;
 
-public interface PaymentTransactionRepository extends BaseRepository<PaymentTransaction, UUID>
-{
+public interface PaymentTransactionRepository extends BaseRepository<PaymentTransaction, UUID> {
 
 }

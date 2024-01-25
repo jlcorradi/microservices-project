@@ -5,11 +5,9 @@ import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEven
 import org.springframework.context.ApplicationListener;
 
 @Slf4j
-public class SystemInfoApplicationListener implements ApplicationListener<ApplicationEnvironmentPreparedEvent>
-{
+public class SystemInfoApplicationListener implements ApplicationListener<ApplicationEnvironmentPreparedEvent> {
   @Override
-  public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event)
-  {
+  public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
     String maxHeapSize = getRuntimeMaxHeapSize();
     String port = event.getEnvironment().getProperty("server.port");
 
@@ -26,8 +24,7 @@ public class SystemInfoApplicationListener implements ApplicationListener<Applic
 
   }
 
-  private String getRuntimeMaxHeapSize()
-  {
+  private String getRuntimeMaxHeapSize() {
     long maxMemory = Runtime.getRuntime().maxMemory();
     double maxMemoryInMegabytes = maxMemory / (1024.0 * 1024);
     return String.format("%.2f MB", maxMemoryInMegabytes);

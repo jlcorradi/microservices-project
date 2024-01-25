@@ -5,7 +5,6 @@ import br.com.jlcorradi.payment.dto.PaymentTransactionDto;
 
 import java.util.UUID;
 
-public interface PaymentTransactionService
-{
+public interface PaymentTransactionService {
   PaymentTransactionDto createPaymentTransaction(CreatePaymentTransactionRequest request, UUID userId);
 }

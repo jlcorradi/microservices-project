@@ -9,18 +9,15 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Profile("test")
-public class IntegrationTestBaseContext
-{
+public class IntegrationTestBaseContext {
 
   @Bean
-  public Exchange ecommerceEventExchange()
-  {
+  public Exchange ecommerceEventExchange() {
     return new FanoutExchange("test.exchange");
   }
 
   @Bean
-  Jackson2JsonMessageConverter messageConverter()
-  {
+  Jackson2JsonMessageConverter messageConverter() {
     return new Jackson2JsonMessageConverter();
   }
 

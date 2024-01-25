@@ -11,36 +11,31 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-class EventConfig
-{
+class EventConfig {
   private final String paymentStatusChangeQueue;
   private final String orderStatusChangeQueue;
   private final Exchange ecommerceEventExchange;
 
   EventConfig(@Value("${eventArchitecture.notificationOnPaymentStatusChangeQueue}") String paymentStatusChangeQueue,
               @Value("${eventArchitecture.notificationOnOrderStatusChangeQueue}") String orderStatusChangeQueue,
-              Exchange ecommerceEventExchange)
-  {
+              Exchange ecommerceEventExchange) {
     this.paymentStatusChangeQueue = paymentStatusChangeQueue;
     this.orderStatusChangeQueue = orderStatusChangeQueue;
     this.ecommerceEventExchange = ecommerceEventExchange;
   }
 
   @Bean
-  public Queue onPaymentStatusChangeQueue()
-  {
+  public Queue onPaymentStatusChangeQueue() {
     return new Queue(paymentStatusChangeQueue);
   }
 
   @Bean
-  Queue onOrderStatusChangeQueue()
-  {
+  Queue onOrderStatusChangeQueue() {
     return new Queue(orderStatusChangeQueue);
   }
 
   @Bean
-  public Binding onPaymentStatusChangeQueueBinding(@Value("#{onPaymentStatusChangeQueue}") Queue onPaymentStatusChangeQueue)
-  {
+  public Binding onPaymentStatusChangeQueueBinding(@Value("#{onPaymentStatusChangeQueue}") Queue onPaymentStatusChangeQueue) {
     return BindingBuilder
         .bind(onPaymentStatusChangeQueue)
         .to(ecommerceEventExchange)
@@ -49,8 +44,7 @@ class EventConfig
   }
 
   @Bean
-  public Binding onOrderStatusChangeQueueBinding(@Value("#{onOrderStatusChangeQueue}") Queue onOrderStatusChangeQueue)
-  {
+  public Binding onOrderStatusChangeQueueBinding(@Value("#{onOrderStatusChangeQueue}") Queue onOrderStatusChangeQueue) {
     return BindingBuilder
         .bind(onOrderStatusChangeQueue)
         .to(ecommerceEventExchange)

@@ -11,22 +11,19 @@ import static br.com.jlcorradi.payment.PaymentRoutingConstants.EVENT_PAYMENT_STA
 
 @Slf4j
 @Component
-public class RabbitMQPaymentEventPublisher implements PaymentEventPublisher
-{
+public class RabbitMQPaymentEventPublisher implements PaymentEventPublisher {
   private final RabbitTemplate rabbitTemplate;
   private final String ecommerceExchangeTopicName;
 
   public RabbitMQPaymentEventPublisher(
       RabbitTemplate rabbitTemplate,
-      @Value("#{ecommerceEventExchange.name}") String ecommerceExchangeTopicName)
-  {
+      @Value("#{ecommerceEventExchange.name}") String ecommerceExchangeTopicName) {
     this.rabbitTemplate = rabbitTemplate;
     this.ecommerceExchangeTopicName = ecommerceExchangeTopicName;
   }
 
   @Override
-  public void publishPaymentStatusChange(PaymentTransaction paymentTransaction)
-  {
+  public void publishPaymentStatusChange(PaymentTransaction paymentTransaction) {
     PaymentStatusChangeEvent payload = PaymentStatusChangeEvent.builder()
         .paymentTransactionId(paymentTransaction.getId())
         .status(paymentTransaction.getStatus())

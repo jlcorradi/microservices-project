@@ -32,8 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Slf4j
 @Import(IntegrationTestBaseContext.class)
-class PaymentApiTest extends ServiceTest
-{
+class PaymentApiTest extends ServiceTest {
 
   @MockBean
   RabbitTemplate rabbitTemplate;
@@ -56,10 +55,10 @@ class PaymentApiTest extends ServiceTest
 
   @Test
   @DisplayName("Create payment successfully")
-  void shouldCreatePaymentSuccessfully() throws Exception
-  {
+  void shouldCreatePaymentSuccessfully() throws Exception {
     // GIVEN
     CreatePaymentTransactionRequest request = paymentTransactionRequest(x -> x);
+
     // WHEN
     ResultActions resultActions = mockMvc.perform(post("/api/v1/payments")
         .contentType(APPLICATION_JSON)
@@ -74,7 +73,10 @@ class PaymentApiTest extends ServiceTest
         .andExpect(jsonPath("$.amount").value("1988.23"))
         .andExpect(jsonPath("$.status").value(PaymentTransactionStatus.ACCEPTED.toString()));
 
-    verify(rabbitTemplate).convertAndSend(exchangeCaptor.capture(), routingKeyCaptor.capture(), messageCaptor.capture());
+    verify(rabbitTemplate).convertAndSend(exchangeCaptor.capture(),
+        routingKeyCaptor.capture(),
+        messageCaptor.capture()
+    );
     assertEquals(EVENT_PAYMENT_STATUS_CHANGE_ROUTING_KEY, routingKeyCaptor.getValue());
     PaymentStatusChangeEvent message = messageCaptor.getValue();
     assertNotNull(message.getPaymentTransactionId());

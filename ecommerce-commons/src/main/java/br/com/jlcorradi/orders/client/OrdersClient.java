@@ -11,8 +11,7 @@ import java.util.UUID;
 import static br.com.jlcorradi.orders.OrdersRoutingConstants.ORDERS_API_V1_URL;
 
 @FeignClient(name = "ordersClient", url = "${client-services-urls.order-service:orders}" + ORDERS_API_V1_URL)
-public interface OrdersClient
-{
+public interface OrdersClient {
   @GetMapping(value = "{orderId}")
   ResponseEntity<OrderDto> getOrder(@PathVariable("orderId") UUID orderId);
 }

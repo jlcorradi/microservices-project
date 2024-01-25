@@ -9,12 +9,10 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 
 import java.io.IOException;
 
-public class BasicJwtAuthenticationEntryPoint implements AuthenticationEntryPoint
-{
+public class BasicJwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
   @Override
   public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
-      throws IOException, ServletException
-  {
+      throws IOException, ServletException {
     response.setStatus(HttpStatus.UNAUTHORIZED.value());
   }
 }

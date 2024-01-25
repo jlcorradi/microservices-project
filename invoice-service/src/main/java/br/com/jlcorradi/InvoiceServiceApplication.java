@@ -9,10 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @WithCommons
 @WithStaticJwtSecurity
-public class InvoiceServiceApplication
-{
-  public static void main(String[] args)
-  {
+public class InvoiceServiceApplication {
+  public static void main(String[] args) {
     SpringApplication springApplication = new SpringApplication(InvoiceServiceApplication.class);
     springApplication.addListeners(new SystemInfoApplicationListener());
     springApplication.run(args);

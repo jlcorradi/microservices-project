@@ -8,13 +8,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
 @RequiredArgsConstructor
-public class BasicJwtAuthenticationProvider implements AuthenticationProvider
-{
+public class BasicJwtAuthenticationProvider implements AuthenticationProvider {
   private final JwtValidator jwtValidator;
 
   @Override
-  public Authentication authenticate(Authentication authentication) throws AuthenticationException
-  {
+  public Authentication authenticate(Authentication authentication) throws AuthenticationException {
     try {
       Claims claims = jwtValidator.validateJwtToken(String.valueOf(authentication.getCredentials()));
       return BasicJwtAuthenticationToken.authenticated(
@@ -27,8 +25,7 @@ public class BasicJwtAuthenticationProvider implements AuthenticationProvider
   }
 
   @Override
-  public boolean supports(Class<?> authentication)
-  {
+  public boolean supports(Class<?> authentication) {
     return authentication.isAssignableFrom(BasicJwtAuthenticationToken.class);
   }
 }

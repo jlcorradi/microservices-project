@@ -12,8 +12,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaymentStatusChangeEvent
-{
+public class PaymentStatusChangeEvent {
   private UUID paymentTransactionId;
   private PaymentTransactionStatus status;
   private UUID transactionCode;

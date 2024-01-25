@@ -11,21 +11,18 @@ import static br.com.jlcorradi.orders.OrdersRoutingConstants.EVENT_ORDER_STATUS_
 
 @Slf4j
 @Component
-public class RabbitOrderEventPublisher implements OrderEventPublisher
-{
+public class RabbitOrderEventPublisher implements OrderEventPublisher {
   private final RabbitTemplate rabbitTemplate;
   private final String ecommerceEventExchangeName;
 
   public RabbitOrderEventPublisher(
-      RabbitTemplate rabbitTemplate, @Value("#{ecommerceEventExchange.name}") String ecommerceEventExchangeName)
-  {
+      RabbitTemplate rabbitTemplate, @Value("#{ecommerceEventExchange.name}") String ecommerceEventExchangeName) {
     this.rabbitTemplate = rabbitTemplate;
     this.ecommerceEventExchangeName = ecommerceEventExchangeName;
   }
 
   @Override
-  public void publishOrderStatusChange(Order order)
-  {
+  public void publishOrderStatusChange(Order order) {
     log.info("Publishing order status change. #Order: {}, Status: {}", order.getId(), order.getStatus());
     OrderStatusChangeEvent event = OrderStatusChangeEvent.builder()
         .orderId(order.getId())

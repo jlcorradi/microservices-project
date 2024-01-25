@@ -16,8 +16,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class PrimaryTransactionService implements PaymentTransactionService
-{
+public class PrimaryTransactionService implements PaymentTransactionService {
   private final PaymentTransactionRepository repository;
   private final ModelMapper mapper;
   private final PaymentEventPublisher paymentEventPublisher;
@@ -25,8 +24,7 @@ public class PrimaryTransactionService implements PaymentTransactionService
   private final EntityDtoMapper<PaymentTransaction, PaymentTransactionDto> paymentTransactionDtoEntityDtoMapper;
 
   @Override
-  public PaymentTransactionDto createPaymentTransaction(CreatePaymentTransactionRequest request, UUID userId)
-  {
+  public PaymentTransactionDto createPaymentTransaction(CreatePaymentTransactionRequest request, UUID userId) {
     PaymentTransaction paymentTransaction = mapper.map(request, PaymentTransaction.class);
 
     String sanitizedCcNumber = request.getPaymentInfo().getCcNumber().replaceAll("(?<!^..).(?=.{3})", "*");

@@ -12,8 +12,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EcommerceUser
-{
+public class EcommerceUser {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;

@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+client-services-urls:
+  payment-service: http://localhost:8084
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/order_db
+    username: user_order
+    password: s3cr3t_order
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  rabbitmq:
+    addresses: localhost:5672
+    username: rabbit
+    password: rabbit
+
+logging:
+  level:
+    br.com.jlcorradi: TRACE
+
+eventArchitecture:
+  ecommerceEventExchange: ecommerce_event_topic

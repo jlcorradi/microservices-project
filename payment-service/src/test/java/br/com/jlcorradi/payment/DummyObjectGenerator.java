@@ -8,12 +8,10 @@ import java.util.UUID;
 import java.util.function.Function;
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
-public class DummyObjectGenerator
-{
+public class DummyObjectGenerator {
   public static CreatePaymentTransactionRequest paymentTransactionRequest(
       Function<CreatePaymentTransactionRequest.CreatePaymentTransactionRequestBuilder,
-          CreatePaymentTransactionRequest.CreatePaymentTransactionRequestBuilder> x)
-  {
+          CreatePaymentTransactionRequest.CreatePaymentTransactionRequestBuilder> x) {
     CreatePaymentTransactionRequest.CreatePaymentTransactionRequestBuilder builder =
         CreatePaymentTransactionRequest.builder();
 
@@ -27,8 +25,7 @@ public class DummyObjectGenerator
 
   private static CreatePaymentTransactionRequest.PaymentInfo paymentInfo(
       Function<CreatePaymentTransactionRequest.PaymentInfo.PaymentInfoBuilder,
-          CreatePaymentTransactionRequest.PaymentInfo.PaymentInfoBuilder> x)
-  {
+          CreatePaymentTransactionRequest.PaymentInfo.PaymentInfoBuilder> x) {
     CreatePaymentTransactionRequest.PaymentInfo.PaymentInfoBuilder builder =
         CreatePaymentTransactionRequest.PaymentInfo.builder();
 

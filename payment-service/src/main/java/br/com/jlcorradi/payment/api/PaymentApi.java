@@ -19,16 +19,14 @@ import static br.com.jlcorradi.payment.PaymentRoutingConstants.PAYMENTS_API_URL;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(PAYMENTS_API_URL)
-public class PaymentApi
-{
+public class PaymentApi {
   private final PaymentTransactionService paymentTransactionService;
 
   @PostMapping
   public ResponseEntity<PaymentTransactionDto> createPaymentTransaction(
       @Valid @RequestBody CreatePaymentTransactionRequest request,
       BasicJwtAuthenticationToken principal
-  )
-  {
+  ) {
     PaymentTransactionDto paymentTransaction = paymentTransactionService.createPaymentTransaction(request,
         UUID.fromString(principal.getUserId()));
     return ResponseEntity.ok(paymentTransaction);

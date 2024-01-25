@@ -7,16 +7,14 @@ import lombok.NoArgsConstructor;
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class TestUtils
-{
+public class TestUtils {
   public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
   static {
     OBJECT_MAPPER.configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
   }
 
-  public static String toJson(Object object)
-  {
+  public static String toJson(Object object) {
     try {
       return OBJECT_MAPPER.writeValueAsString(object);
     } catch (Exception e) {

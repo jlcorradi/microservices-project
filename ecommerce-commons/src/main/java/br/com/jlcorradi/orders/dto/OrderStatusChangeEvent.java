@@ -12,8 +12,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderStatusChangeEvent
-{
+public class OrderStatusChangeEvent {
   private UUID orderId;
   private OrderStatus newStatus;
 }

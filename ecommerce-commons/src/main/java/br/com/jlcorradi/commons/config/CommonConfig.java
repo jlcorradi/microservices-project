@@ -11,19 +11,16 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Slf4j
 @Configuration
 @Import(MessagingConfiguration.class)
-public class CommonConfig
-{
+public class CommonConfig {
 
   @Bean
-  public ModelMapper mapper()
-  {
+  public ModelMapper mapper() {
     log.info("Model Mapper was imported into the context.");
     return new ModelMapper();
   }
 
   @Bean
-  public HandlerInterceptor contextInfoPropagationInterceptor()
-  {
+  public HandlerInterceptor contextInfoPropagationInterceptor() {
     return new ContextInfoPropagationInterceptor();
   }
 

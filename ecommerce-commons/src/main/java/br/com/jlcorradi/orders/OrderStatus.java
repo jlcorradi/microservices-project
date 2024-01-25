@@ -1,7 +1,6 @@
 package br.com.jlcorradi.orders;
 
-public enum OrderStatus
-{
+public enum OrderStatus {
   PENDING,
   AWAITING_PAYMENT,
   AWAITING_INVOICE,

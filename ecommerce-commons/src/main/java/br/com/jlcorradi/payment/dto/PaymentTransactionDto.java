@@ -15,8 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PaymentTransactionDto
-{
+public class PaymentTransactionDto {
   private UUID orderId;
   private UUID customerId;
   private Date transactionDate;

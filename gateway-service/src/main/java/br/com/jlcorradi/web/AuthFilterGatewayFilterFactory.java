@@ -20,8 +20,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Component
-public class AuthFilterGatewayFilterFactory extends AbstractGatewayFilterFactory<Object>
-{
+public class AuthFilterGatewayFilterFactory extends AbstractGatewayFilterFactory<Object> {
 
   public static final String BEARER_PREFIX = "Bearer ";
   private final WebClient.Builder webClientBuilder;
@@ -29,15 +28,13 @@ public class AuthFilterGatewayFilterFactory extends AbstractGatewayFilterFactory
   private final String usersServiceBaseUrl;
 
   public AuthFilterGatewayFilterFactory(WebClient.Builder webClientBuilder,
-                                        @Value("${client-services-urls.auth-service}") String usersServiceBaseUrl)
-  {
+                                        @Value("${client-services-urls.auth-service}") String usersServiceBaseUrl) {
     this.webClientBuilder = webClientBuilder;
     this.usersServiceBaseUrl = usersServiceBaseUrl;
   }
 
   @Override
-  public GatewayFilter apply(Object config)
-  {
+  public GatewayFilter apply(Object config) {
     return (exchange, chain) ->
     {
       HttpHeaders headers = exchange.getRequest().getHeaders();
@@ -48,8 +45,7 @@ public class AuthFilterGatewayFilterFactory extends AbstractGatewayFilterFactory
 
       ServerHttpResponse response = exchange.getResponse();
 
-      if (!StringUtils.hasText(authHeader))
-      {
+      if (!StringUtils.hasText(authHeader)) {
         response.setStatusCode(UNAUTHORIZED);
         return response.setComplete();
       }
@@ -73,14 +69,12 @@ public class AuthFilterGatewayFilterFactory extends AbstractGatewayFilterFactory
     };
   }
 
-  private boolean isAuthenticationError(HttpStatusCode httpStatusCode)
-  {
+  private boolean isAuthenticationError(HttpStatusCode httpStatusCode) {
     return Stream.of(UNAUTHORIZED, FORBIDDEN)
         .anyMatch(httpStatusCode::isSameCodeAs);
   }
 
-  record UserDto(Long userId, String commaSeparatedAuthorities)
-  {
+  record UserDto(Long userId, String commaSeparatedAuthorities) {
   }
 
 }

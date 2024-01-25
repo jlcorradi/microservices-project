@@ -11,10 +11,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @WithStaticJwtSecurity
 @WithCommons
 @EnableFeignClients
-public class NotificationServiceApplication
-{
-  public static void main(String[] args)
-  {
+public class NotificationServiceApplication {
+  public static void main(String[] args) {
     SpringApplication springApplication = new SpringApplication(NotificationServiceApplication.class);
     springApplication.addListeners(new SystemInfoApplicationListener());
     springApplication.run(args);

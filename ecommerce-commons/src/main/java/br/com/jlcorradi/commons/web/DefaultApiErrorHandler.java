@@ -18,12 +18,10 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @ControllerAdvice
-public class DefaultApiErrorHandler
-{
+public class DefaultApiErrorHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex)
-  {
+  public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
     Map<String, String> result = ex.getBindingResult().getAllErrors().stream()
         .collect(Collectors.toMap(
             err -> (err instanceof FieldError fieldError) ? fieldError.getField() : err.getObjectName(),
@@ -36,14 +34,12 @@ public class DefaultApiErrorHandler
 
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
   @ExceptionHandler(UnauthorizedTokenException.class)
-  public void handleUnauthorizedException(UnauthorizedTokenException ex)
-  {
+  public void handleUnauthorizedException(UnauthorizedTokenException ex) {
     log.debug("Unauthorized: {}", ex.getMessage());
   }
 
   @ExceptionHandler(EcommerceExcepion.class)
-  public ResponseEntity<ErrorPayload> handleGenericException(EcommerceExcepion ex)
-  {
+  public ResponseEntity<ErrorPayload> handleGenericException(EcommerceExcepion ex) {
     log.debug("Ecommerce Exception: {}", ex.getCause(), ex.getCause());
     ErrorPayload errorPayload = new ErrorPayload(ex.getMessage());
     return ResponseEntity
@@ -53,8 +49,7 @@ public class DefaultApiErrorHandler
 
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   @ExceptionHandler(RuntimeException.class)
-  public ResponseEntity<ErrorPayload> handleUnauthorizedException(RuntimeException ex)
-  {
+  public ResponseEntity<ErrorPayload> handleUnauthorizedException(RuntimeException ex) {
     log.error("Unhandled Internal Exception", ex);
     log.debug("Ecommerce Exception: {}", ex.getCause(), ex.getCause());
     ErrorPayload errorPayload = new ErrorPayload("Internal Error");

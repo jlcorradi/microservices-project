@@ -15,14 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
-public class AuthApi
-{
+public class AuthApi {
 
   private final EcommerceUserService userService;
 
   @PostMapping
-  public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request)
-  {
+  public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
     return userService.login(request)
         .map(ResponseEntity::ok)
         .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
@@ -32,8 +30,7 @@ public class AuthApi
   public ResponseEntity<EcommerceUserDto> validateToken(
       @RequestParam("accessToken") String accessToken,
       @RequestParam("uri") String uri
-  )
-  {
+  ) {
     EcommerceUserDto ecommerceUserDto = userService.resolveUserFromToken(accessToken);
     log.debug("Verifying access to URI: {}", uri);
     return ResponseEntity.ok(ecommerceUserDto);

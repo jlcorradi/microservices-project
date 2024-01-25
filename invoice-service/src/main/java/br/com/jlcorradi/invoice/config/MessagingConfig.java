@@ -11,21 +11,18 @@ import org.springframework.context.annotation.Configuration;
 
 @RequiredArgsConstructor
 @Configuration
-class MessagingConfig
-{
+class MessagingConfig {
   private final Exchange ecommerceEventExchange;
 
   @Bean
-  public Queue invoiceOnOrderStatusChangeQueue()
-  {
+  public Queue invoiceOnOrderStatusChangeQueue() {
     return new Queue("invoice_on_order_status_change_queue");
   }
 
   @Bean
   public Binding invoiceOnOrderStatusChangeQueueBinding(
       Queue invoiceOnOrderStatusChangeQueueBinding
-  )
-  {
+  ) {
     return BindingBuilder.bind(invoiceOnOrderStatusChangeQueueBinding)
         .to(ecommerceEventExchange)
         .with(OrdersRoutingConstants.EVENT_ORDER_STATUS_CHANGE_ROUTING_KEY)

@@ -36,8 +36,7 @@ import static br.com.jlcorradi.commons.auth.Constants.USER_ID_JWT_CLAIM;
 @AutoConfigureMockMvc
 @SpringBootTest
 @Import(IntegrationTestBaseContext.class)
-public abstract class ServiceTest
-{
+public abstract class ServiceTest {
   @Autowired
   protected MockMvc mockMvc;
 
@@ -45,13 +44,11 @@ public abstract class ServiceTest
   protected JwtValidator jwtValidator;
 
   @BeforeEach
-  protected void setup()
-  {
+  protected void setup() {
     withRoles("ROLE_user");
   }
 
-  protected void withRoles(String commaSeparatedRoles)
-  {
+  protected void withRoles(String commaSeparatedRoles) {
     Mockito.when(jwtValidator.validateJwtToken(ArgumentMatchers.anyString())).thenReturn(new DefaultClaims(Map.of(
         Claims.SUBJECT, "testuser@email.com",
         USER_ID_JWT_CLAIM, UUID.randomUUID().toString(),

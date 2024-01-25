@@ -14,8 +14,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-enum HeaderMessageType
-{
+enum HeaderMessageType {
   ERROR("x-error-message"), INFO("x-info-message"), WARNING("x-warning-message"),
   SUCCESS("x-success-message");
   @Getter
@@ -26,11 +25,9 @@ enum HeaderMessageType
  * Utility class for working with HTTP-related tasks.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class HttpUtils
-{
+public class HttpUtils {
 
-  public static Optional<String> getHeaderFromCurrentRequest(String headerName)
-  {
+  public static Optional<String> getHeaderFromCurrentRequest(String headerName) {
     return getHttpServletRequest()
         .map(req -> req.getHeader(headerName));
   }
@@ -41,8 +38,7 @@ public class HttpUtils
    * @return The current HttpServletResponse instance.
    * @throws IllegalStateException If there is no active request.
    */
-  public static Optional<HttpServletResponse> getHttpServletResponse()
-  {
+  public static Optional<HttpServletResponse> getHttpServletResponse() {
     return Optional.ofNullable(RequestContextHolder.getRequestAttributes())
         .map(ServletRequestAttributes.class::cast)
         .map(ServletRequestAttributes::getResponse);
@@ -54,8 +50,7 @@ public class HttpUtils
    * @return The current HttpServletResponse instance.
    * @throws IllegalStateException If there is no active request.
    */
-  public static Optional<HttpServletRequest> getHttpServletRequest()
-  {
+  public static Optional<HttpServletRequest> getHttpServletRequest() {
     return Optional.ofNullable(RequestContextHolder.getRequestAttributes())
         .map(ServletRequestAttributes.class::cast)
         .map(ServletRequestAttributes::getRequest);
@@ -67,8 +62,7 @@ public class HttpUtils
    * @param messageType The type of the header message.
    * @param message     The message content to be added.
    */
-  public static void addHeaderMessage(HeaderMessageType messageType, String message)
-  {
+  public static void addHeaderMessage(HeaderMessageType messageType, String message) {
     HttpUtils.getHttpServletResponse()
         .ifPresent(res -> res.addHeader(messageType.getHeaderName(), message));
   }
@@ -79,8 +73,7 @@ public class HttpUtils
    * @return An Optional containing the logged-in user's details if available,
    * or an empty Optional if not logged in or details are not available.
    */
-  public static Optional<BasicJwtAuthenticationToken> getLoggedinUser()
-  {
+  public static Optional<BasicJwtAuthenticationToken> getLoggedinUser() {
     if (!BasicJwtAuthenticationToken.class.isAssignableFrom(
         SecurityContextHolder.getContext().getAuthentication().getClass())) {
       return Optional.empty();

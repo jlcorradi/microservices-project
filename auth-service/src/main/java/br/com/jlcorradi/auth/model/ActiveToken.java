@@ -13,8 +13,7 @@ import java.util.UUID;
 @Table(name = "active_token")
 @AllArgsConstructor(staticName = "of")
 @NoArgsConstructor
-public class ActiveToken
-{
+public class ActiveToken {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)

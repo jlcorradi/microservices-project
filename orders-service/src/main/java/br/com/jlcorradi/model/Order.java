@@ -13,8 +13,7 @@ import java.util.UUID;
 @Data
 @Table(name = "ecommerce_order")
 @Entity
-public class Order
-{
+public class Order {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;

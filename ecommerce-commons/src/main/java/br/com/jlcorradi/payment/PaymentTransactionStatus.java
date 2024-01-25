@@ -1,6 +1,5 @@
 package br.com.jlcorradi.payment;
 
-public enum PaymentTransactionStatus
-{
+public enum PaymentTransactionStatus {
   PENDING, ACCEPTED, REJECTED, REFUNDED
 }

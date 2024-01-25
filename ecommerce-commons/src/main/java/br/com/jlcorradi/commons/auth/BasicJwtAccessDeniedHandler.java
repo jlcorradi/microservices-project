@@ -9,12 +9,10 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 
 import java.io.IOException;
 
-public class BasicJwtAccessDeniedHandler implements AccessDeniedHandler
-{
+public class BasicJwtAccessDeniedHandler implements AccessDeniedHandler {
   @Override
   public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException)
-      throws IOException, ServletException
-  {
+      throws IOException, ServletException {
     response.setStatus(HttpStatus.FORBIDDEN.value());
   }
 }

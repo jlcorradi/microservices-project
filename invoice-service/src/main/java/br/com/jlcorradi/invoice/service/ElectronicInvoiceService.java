@@ -8,12 +8,10 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class ElectronicInvoiceService implements OrderStatusChangeEventListener
-{
+public class ElectronicInvoiceService implements OrderStatusChangeEventListener {
   @Override
   @RabbitListener(queues = "#{invoiceOnOrderStatusChangeQueue.name}")
-  public void onOrderStatusChange(OrderStatusChangeEvent event)
-  {
+  public void onOrderStatusChange(OrderStatusChangeEvent event) {
     log.info("Handling OrderStatusChangeEvent. #Order: {}, status: {}", event.getOrderId(), event.getNewStatus());
   }
 }

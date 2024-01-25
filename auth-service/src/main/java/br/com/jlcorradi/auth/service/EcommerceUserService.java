@@ -14,23 +14,20 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class EcommerceUserService
-{
+public class EcommerceUserService {
 
   private final EcommerceUserRepository repository;
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
 
-  public Optional<LoginResponse> login(LoginRequest request)
-  {
+  public Optional<LoginResponse> login(LoginRequest request) {
     return repository.findByUsername(request.username())
         .filter(ecommerceUser -> passwordEncoder.matches(request.password(), ecommerceUser.getEncodedPassword()))
         .map(jwtService::retrieveOrCreateTokenForUser)
         .map(LoginResponse::new);
   }
 
-  public EcommerceUserDto resolveUserFromToken(String accessToken)
-  {
+  public EcommerceUserDto resolveUserFromToken(String accessToken) {
     return jwtService.validateToken(accessToken);
   }
 }

@@ -12,8 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class OrderDto
-{
+public class OrderDto {
   private UUID orderId;
   private UUID customerId;
   private Date orderDate;

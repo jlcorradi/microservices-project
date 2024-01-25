@@ -13,6 +13,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Configuration
 @Import(BasicJwtAuthSecurityConfig.class)
-public @interface WithStaticJwtSecurity
-{
+public @interface WithStaticJwtSecurity {
 }

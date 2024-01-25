@@ -14,13 +14,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 @EnableWebSecurity
 @EnableMethodSecurity
-public class BasicJwtAuthSecurityConfig
-{
+public class BasicJwtAuthSecurityConfig {
   private final JwtValidator jwtValidator;
 
   @Bean
-  public SecurityFilterChain config(HttpSecurity http) throws Exception
-  {
+  public SecurityFilterChain config(HttpSecurity http) throws Exception {
     log.info("Using Basic Static Jwt based security");
 
     return http
