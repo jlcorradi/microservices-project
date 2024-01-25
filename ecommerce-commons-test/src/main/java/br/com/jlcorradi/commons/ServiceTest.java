@@ -6,7 +6,6 @@ import io.jsonwebtoken.impl.DefaultClaims;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -37,13 +36,16 @@ import static br.com.jlcorradi.commons.auth.Constants.USER_ID_JWT_CLAIM;
 @SpringBootTest
 @Import(IntegrationTestBaseContext.class)
 public abstract class ServiceTest {
-  @Autowired
-  protected MockMvc mockMvc;
+  protected final MockMvc mockMvc;
 
   @MockBean
   protected JwtValidator jwtValidator;
 
-  @BeforeEach
+    protected ServiceTest(MockMvc mockMvc) {
+        this.mockMvc = mockMvc;
+    }
+
+    @BeforeEach
   protected void setup() {
     withRoles("ROLE_user");
   }
