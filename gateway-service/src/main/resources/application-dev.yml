@@ -1,0 +1,9 @@
+server:
+  port: 8090
+
+client-services-urls:
+  orders-service: http://localhost:8080
+  auth-service: http://localhost:8081
+  payment-service: http://localhost:8084
+  invoice-service: http://localhost:8086
+  notification-service: http://localhost:8081

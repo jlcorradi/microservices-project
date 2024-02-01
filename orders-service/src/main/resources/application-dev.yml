@@ -4,10 +4,13 @@ server:
 client-services-urls:
   payment-service: http://localhost:8084
 
+authService:
+  jwtTokenSecret: RW50ZXIgdGhlIG1hdHJpeC4gSXQncyBhIGZhY2VzaXRpbmcgd29ybGQgb3V0IHRoZXIh
+
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/order_db
-    username: user_order
+    username: order_user
     password: s3cr3t_order
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:

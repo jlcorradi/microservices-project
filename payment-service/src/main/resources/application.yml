@@ -4,7 +4,6 @@ server:
 authService:
   jwtTokenSecret: ${JWT_TOKEN_SECRET}
 
-
 management:
   observations:
     key-values:
