@@ -24,7 +24,7 @@ management:
 
 spring:
   application:
-    name: Application Name
+    name: Notification Service
   datasource:
     url: ${JDBC_URL}
     username: ${JDBC_USERNAME}
