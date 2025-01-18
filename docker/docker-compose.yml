@@ -1,0 +1,36 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: s3cr3t
+    volumes:
+      - "./mysql-init:/docker-entrypoint-initdb.d"
+    ports:
+      - "3306:3306"
+    networks:
+      - microservices_network
+
+  rabbit:
+    image: rabbitmq:latest
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbit
+      RABBITMQ_DEFAULT_PASS: rabbit
+    networks:
+      - microservices_network
+
+  papercut:
+    image: jijiechen/papercut:latest
+    container_name: papercut
+    ports:
+      - "25:25"
+      - "37408:37408"
+    networks:
+      - microservices_network
+
+
+networks:
+  microservices_network:
