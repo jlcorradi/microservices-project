@@ -29,3 +29,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+app:
+  example-user-name: admin
+  example-user-password: password
