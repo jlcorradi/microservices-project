@@ -34,6 +34,12 @@ spring:
     addresses: localhost:5672
     username: rabbit
     password: rabbit
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            logger-level: full
 
 
 eventArchitecture:

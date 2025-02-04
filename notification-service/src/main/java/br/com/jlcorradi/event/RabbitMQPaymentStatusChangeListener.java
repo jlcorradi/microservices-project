@@ -28,7 +28,11 @@ public class RabbitMQPaymentStatusChangeListener implements PaymentStatusChangeL
   @RabbitListener(queues = "#{onOrderStatusChangeQueue.name}")
   public void onOrderStatusChange(OrderStatusChangeEvent event) {
     log.info("Handling onOrderStatusChange {}", event);
-    ResponseEntity<OrderDto> response = ordersClient.getOrder(event.getOrderId());
-    log.info("Order: {}", response);
+    try {
+      ResponseEntity<OrderDto> response = ordersClient.getOrder(event.getOrderId());
+      log.info("Order: {}", response);
+    } catch (Exception exception) {
+      log.error("Error requesting order to Order service.", exception);
+    }
   }
 }
